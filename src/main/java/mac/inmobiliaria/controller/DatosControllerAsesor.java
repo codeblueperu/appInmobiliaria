@@ -1,6 +1,7 @@
 package mac.inmobiliaria.controller;
 
 import mac.inmobiliaria.model.*;
+import mac.inmobiliaria.repository.AsignacionRepository;
 import mac.inmobiliaria.repository.DatosRepository;
 import mac.inmobiliaria.repository.UsuarioRepository;
 
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static mac.inmobiliaria.util.Constant.obtenerUsuarioLogeadoId;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,6 +33,9 @@ public class DatosControllerAsesor {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private AsignacionRepository srvAsignacion;
 
 	@GetMapping()
 	public String index(Model model, 
@@ -252,6 +257,17 @@ public class DatosControllerAsesor {
 		ra.addFlashAttribute("msgExito", "El Cliente se ha habilitado correctamente");
 		return "redirect:/datos";
 
+	}
+	
+	@GetMapping("/transpasarclientes")
+	String transpasarClientes(Model model) {
+		List<Usuario> accesoresEntrantes = usuarioRepository.findByRolAndIdNot(Usuario.Rol.VENDEDOR,obtenerUsuarioLogeadoId());
+		List<Asignacion> listaclientes = srvAsignacion.findByAllUsuario(obtenerUsuarioLogeadoId());
+		System.err.println(listaclientes);
+		model.addAttribute("idlogin", obtenerUsuarioLogeadoId());
+		model.addAttribute("listaclientes", listaclientes);
+		model.addAttribute("accesorentrante", accesoresEntrantes);
+		return "clientes/transferir";
 	}
 
 	@ModelAttribute

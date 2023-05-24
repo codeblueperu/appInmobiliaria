@@ -84,10 +84,10 @@ public class ProformaControllerAsesor {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(username);
 
         List<Datos> listaDatos = datosRepository.findAll();
-
+        System.err.println(listaDatos);
         String datosId = null;
-        if (listaDatos.isEmpty()) {
-            Datos datos = listaDatos.get(0); // Obtén el primer objeto Datos de la lista
+        if (listaDatos.size() > 0) {
+           Datos datos = listaDatos.get(0); // Obtén el primer objeto Datos de la lista
             datosId = datos.getNombres();
         }
         	

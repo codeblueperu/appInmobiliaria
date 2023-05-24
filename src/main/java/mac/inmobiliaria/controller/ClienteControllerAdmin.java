@@ -5,7 +5,6 @@ import java.util.List;
 import mac.inmobiliaria.model.Cliente;
 import mac.inmobiliaria.model.Ubigeo;
 import mac.inmobiliaria.model.Usuario;
-import mac.inmobiliaria.repository.AsignacionRepository;
 import mac.inmobiliaria.repository.ClienteRepository;
 import mac.inmobiliaria.repository.UbigeoRepository;
 import mac.inmobiliaria.repository.UsuarioRepository;
@@ -27,9 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.persistence.EntityManager;
-import javax.websocket.server.PathParam;
-
 import static mac.inmobiliaria.util.Constant.obtenerUsuarioLogeadoId;
 
 @Controller
@@ -38,15 +34,9 @@ public class ClienteControllerAdmin {
 	@Autowired
 	private ClienteRepository clienteRepository;
 
-	@Autowired
-	private EntityManager entityManager;
 
 	@Autowired
 	private UbigeoRepository ubigeoRepository;
-
-	@Autowired
-	private AsignacionRepository asignacionRepository;
-
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 
@@ -241,54 +231,6 @@ public class ClienteControllerAdmin {
 		clienteDB.setEstado(1);
 		clienteRepository.save(clienteDB);
 		ra.addFlashAttribute("msgExito", "Cliente habilitado correctamente");
-
-		return "redirect:/admin/clientes";
-
-	}
-	/**
-	 * <form action="/transpasarclientes" method="post">
-	 * <select name="idsaliente">
-	 * <option th></option>
-	 * 
-	 * 
-	 * 
-	 * <select id="usuarioDestinoId" name="usuarioDestinoId">
-            <option value="">Seleccione un usuario de destino</option>
-            <!-- Aquí se generan las opciones de los usuarios -->
-            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nombre}"></option>
-        </select>
-        
-	 * </select>
-	 * </form>
-	 * @param idsaliente
-	 * @param identrante
-	 * @param ra
-	 * @param model
-	 * @return
-	 */
-	
-	@GetMapping("/transpasarclientes")
-	String transpasarClientes(Model model) {
-		List<Usuario> listaUsu = usuarioRepository.findNombreCompletoByRol(Usuario.Rol.ADMIN);
-
-		model.addAttribute("listaUsu", listaUsu);
-		return "clientes/transferir";
-	}
-	
-	@PostMapping("/transpasarclientes")
-	String transpasarClientes(@RequestParam(name="idsaliente") Integer idsaliente,
-			@RequestParam(value="identrante") Integer identrante, RedirectAttributes ra, Model model) {
-
-		
-		List<Cliente> lista = clienteRepository.findByUsuarioId(idsaliente);
-		for (Cliente cliente : lista) {			
-			cliente.setUsuario(new Usuario(identrante));
-			clienteRepository.save(cliente);
-		}
-
-		//clienteDB.setEstado(1);
-		//clienteRepository.save(clienteDB);
-		ra.addFlashAttribute("msgExito", "La Tranferencia de Cliente fue exitoso!");
 
 		return "redirect:/admin/clientes";
 

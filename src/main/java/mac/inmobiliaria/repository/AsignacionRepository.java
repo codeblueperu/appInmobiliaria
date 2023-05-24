@@ -39,7 +39,8 @@ public interface AsignacionRepository extends JpaRepository<Asignacion, Integer>
     Page<Asignacion> findByEstadoAndUsuarioId(String t,int id, Pageable p);
     
     Page<Asignacion> findByClienteDni(String nombres,Pageable p);
-   
+    
+    Asignacion findByClienteId(int idcliente);
     
     
 

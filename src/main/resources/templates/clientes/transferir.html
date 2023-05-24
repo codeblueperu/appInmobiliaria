@@ -24,7 +24,7 @@
 			<div class="container-fluid">
 				<div class="page-header">
 					<h1 class="text-titles">
-						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Usuarios <small>
+						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Transferencia <small>
 							CLIENTES</small>
 					</h1>
 				</div>
@@ -32,75 +32,96 @@
 
 			<div class="container-fluid">
 				<ul class="breadcrumb breadcrumb-tabs">
-					<li><a th:href="@{/admin/clientes/nuevo}" class="btn btn-info">
-							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE
+					<li>
+						<a th:href="@{/datos}" class="btn btn-info">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE CLIENTES HABILITADOS
+						</a>
+					</li>
+					<li><a th:href="@{/datos/buscador}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR CLIENTES DESHABILITADOS
 					</a></li>
-					<li><a th:href="@{/admin/clientes}" class="btn btn-success"> <i
-							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE
-							CLIENTES
-					</a></li>
-					<li><a th:href="@{/admin/clientes/buscador}" class="btn btn-primary">
-							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR CLIENTE
-					</a></li>
-					<li><a th:href="@{/admin/clientes/transpasarclientes}" class="btn btn-yellow">
+					<li><a th:href="@{/datos/transpasarclientes}" class="btn btn-primary">
 							<i class="zmdi zmdi-search"></i> &nbsp; TRANSFERIR CLIENTES
 					</a></li>
-					
 				</ul>
 			</div>
 			
 			
 			<div class="container-fluid">
-				<form th:action="@{/admin/clientes/transpasarclientes}" method="POST">
 					<div class="row">
 						<div class="col-md-12">
-							<form class="well">
 								<!-- Second form content here -->
 								<div class="container-fluid">
-									<form class="well">
+									
 										<div class="row">
-											<div class="col-xs-6 col-sm-6">
+											<div class="col-xs-4 col-sm-4">
 												<div class="form-group label-floating">
 													<label for="idsaliente" class="form-select">Asesor Comercial Saliente *</label>
 													<select id="idsaliente"
 															class="form-control"
-															type="select"
+															type="select" disabled="true" 
 															name="idsaliente">
-														<option value="">Seleccione un usuario de saliente</option>
-			                                    		<option th:each="usuario : ${listaUsu}" 
-					                                    		th:value="${usuario.id}" 
-					                                    		th:text="${usuario.nombres}">
+			                                    		<option  
+					                                    		th:value="${dtuser.id}" 
+					                                    		selected="" 
+					                                    		th:text="${dtuser.nombres}">
 			                                    		</option>
 													</select>
 												</div>
 											</div>
-											<div class="col-xs-6 col-sm-6">
+											<div class="col-xs-4 col-sm-4">
 												<div class="form-group label-floating">
 													<label for="identrante" class="form-select">Asesor Comercial Entrante *</label>
 													<select id="identrante"
 															class="form-control"
 															type="select"
 															name="identrante">
-														<option value="">Seleccione un usuario de entrante</option>
-			                                    		<option th:each="usuario : ${listaUsu}" 
+														<option value="0">Seleccione un usuario de entrante</option>
+			                                    		<option th:each="usuario : ${accesorentrante}" 
 					                                    		th:value="${usuario.id}" 
 					                                    		th:text="${usuario.nombres}">
 			                                    		</option>
 													</select>
 												</div>
 											</div>
-											<div class="col-xs-12">
-												<p class="text-center">
-													<button type="submit" class="btn btn-success btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-filter-list"></i> &nbsp; TRANSFERIR CLIENTES</button>
+											<div class="col-xs-4">
+												<p class="text-center" style="margin-top: 25px">
+													<button onclick="onProcesarMasa()" class="btn btn-success btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-filter-list"></i> TRANSFERIR TODOS</button>
 												</p>
 											</div>
 										</div>
-									</form>
+									
+										<div class="row">
+											<div class="table-responsive">
+												<table class="table table-hover text-center" id="__table_clientes">
+													<thead>
+														<tr>
+															<th>ID</th>
+															<th>Cliente</th>
+															<th>DNI</th>
+															<th>PROYECTO</th>
+															<th><th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr th:each="item : ${listaclientes}"> 
+															<td th:text="${item.cliente.id}"></td>
+															<td th:text="${item.cliente.nombre}"></td>
+															<td th:text="${item.cliente.dni}"></td>
+															<td th:text="${item.cliente.proyecto}"></td>
+															<th>
+																<span th:onclick="onProcesoManual([[${item.cliente.id}]])" id="btnsend" class="material-icons-outlined tranferir">
+																	transfer_within_a_station
+																</span>
+															<th>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+										</div>
 								</div>
-							</form>
 						</div>
 					</div>
-				</form>
 			</div>
 		</section>
 
@@ -119,21 +140,129 @@
 	
 
 	<div layout:fragment="scripts">
+		<script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 		<script th:inline="javascript">
-		$("#ulUsuarios").addClass("show-sideBar-SubMenu")
-		
-		$("#liClientes").addClass("active")
-		var msgOK = [[${msgExito}]]
-		
-		var msgError = [[${msgError}]]
-		console.log(msgOK)
-		if(msgOK){			
-			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		$("#ulRegistro").addClass("show-sideBar-SubMenu")
+	
+	$("#liDatos").addClass("active")
+
+		__table__clientes = $("#__table_clientes").DataTable({
+						    paging: false,
+						    lengthChange: true,
+						    searching: true,
+						    ordering: false,
+						    info: true,
+						    retrieve: true,
+						    processing: true,
+						    autoWidth: false,
+						    language: {
+						      sProcessing: "Procesando...",
+						      sLengthMenu: "Mostrar _MENU_ registros",
+						      sZeroRecords: "No se encontraron resultados",
+						      sEmptyTable: "Ningún dato disponible en esta tabla",
+						      sInfo: "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+						      sInfoEmpty: "Mostrando registros del 0 al 0 de un total de 0",
+						      sInfoFiltered: "(filtrado de un total de _MAX_ registros)",
+						      sInfoPostFix: "",
+						      sSearch: "Buscar:",
+						      sUrl: "",
+						      sInfoThousands: ",",
+						      sLoadingRecords: "Cargando...",
+						      oPaginate: {
+						        sFirst: "Primero",
+						        sLast: "Último",
+						        sNext: "Siguiente",
+						        sPrevious: "Anterior",
+						      },
+						      oAria: {
+						        sSortAscending:
+						          ": Activar para ordenar la columna de manera ascendente",
+						        sSortDescending:
+						          ": Activar para ordenar la columna de manera descendente",
+						      },
+						    },
+						  });
+
+	function onProcesarMasa(){
+		 let pagetable = __table__clientes.page.info();
+		  let cntclientes = pagetable.recordsTotal;
+		  if (cntclientes === 0) {
+		  	swal({"icon": "warning", "title": "Lo sentimos", "text": "No tiene ningun cliente asignado para realizar una transferencia en masa."})
+		    return false;
+		  }
+		if($("#identrante").val() == "0"){
+			swal({"icon": "warning", "title": "Lo sentimos", "text": "No tiene ningun accesor seleccionado para el transferencia de clientes."})
+			return false;
 		}
-		
-		if(msgError){			
-			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		let i = 0;
+    	let detalle = [];
+		$("#__table_clientes tr").each(function () {
+	      if (i != 0) {
+	      	let id = $(this).find("td").eq(0).html()
+	        detalle.push(parseInt(id));
+	      }
+	      i++;
+	    });
+	    let formdata = new FormData();
+	    formdata.append('clientes', detalle)
+	    formdata.append('idaccesor', parseInt($("#identrante").val()))
+
+	    $.ajax({
+				url: '/api/v1/tranferirclientesmasivo',
+				type: 'POST',
+				dataType: 'JSON',
+				data:  formdata,
+				processData: false,
+  				contentType: false,
+			})
+			.done(function({message}) {
+				__table__clientes.clear().draw();
+				swal({"icon": "success", "title": "Muy Bien", "text": message})
+			})
+			.fail(function(err) {
+				console.log(err)
+			});
+	}
+
+	function onProcesoManual(idcliente){
+		if($("#identrante").val() == "0"){
+			swal({"icon": "warning", "title": "Lo sentimos", "text": "No tiene ningun accesor seleccionado para el transferencia de clientes."})
+			return false;
 		}
+		let formdata = new FormData();
+	    formdata.append('idcliente',parseInt(idcliente) )
+	    formdata.append('idaccesor', parseInt($("#identrante").val()))
+		$.ajax({
+				url: '/api/v1/tranferirclientemanual',
+				type: 'POST',
+				dataType: 'JSON',
+				data:  formdata,
+				processData: false,
+  				contentType: false,
+			})
+			.done(function({message,data}) {
+				__table__clientes.clear().draw();
+				for (var i = 0; i < data.length; i++) {
+					let btn = `<span onclick="onProcesoManual(${data[i].cliente.id})" id="btnsend" class="material-icons-outlined tranferir">
+																	transfer_within_a_station
+						</span>`
+					__table__clientes.row
+					.add([
+						data[i].cliente.id,
+						data[i].cliente.nombre,
+						data[i].cliente.dni,
+						data[i].cliente.proyecto,
+						btn
+					])
+					.draw(false);
+				}
+				swal({"icon": "success", "title": "Muy Bien", "text": message})
+			})
+			.fail(function(err) {
+				console.log(err)
+			});
+	}	
+
 	</script>
 		
 

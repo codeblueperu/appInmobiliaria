@@ -70,4 +70,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 	    Page<Usuario> findByRolAndNombreCompletoContaining(Usuario.Rol rol, String nombreCompleto, Pageable pageable);
 
 	    List<Usuario> findByRol(Usuario.Rol rol);
+	    
+	    List<Usuario> findByRolAndIdNot(Usuario.Rol rol, int iduser);
 }

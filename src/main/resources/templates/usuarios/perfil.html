@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Asesores Comerciales</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Perfil <small>Mis Datos Personales</small></h1>
+				</div>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					
+					<div class="panel-body">
+						
+							<input type="hidden" id="txtid" th:value="${idusuario}">
+							<div class="row">
+								<div class="col-xs-12 col-sm-3" id="boxnombres">
+									<div class="form-group label-floating">
+										<label for="nombres" class="control-label">Nombres *</label>
+											<input class="form-control"type="text" th:value="${datauser.nombres}" required name="nombres" id="txtnombres">
+											<div class="invalid-feedback" id="errnombres"></div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3" id="boxapellidos">
+									<div class="form-group label-floating">
+										<label for="nombres" class="control-label">Apellidos *</label>
+											<input class="form-control"type="text" th:value="${datauser.apellidos}" name="apellidos" required id="txtapellidos">
+											<div class="invalid-feedback" id="errapellidos"></div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3" >
+									<div class="form-group label-floating" id="boxtelefono">
+										<label for="telefono" class="control-label">Telefono *</label>
+										<input pattern="[0-9+]{1,15}"
+												class="form-control "
+												type="text" 
+												required name="telefono" th:value="${datauser.telefono}" id="txttelefono">
+											
+										<div class="invalid-feedback" id="errtelefono"></div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+											<div class="form-group label-floating">
+												<label for="email" class="control-label">E-mail</label>
+												<input readonly="readonly"   name="email" class="form-control"
+													   type="email" id="txtemail" th:value="${datauser.email}"
+													   maxlength="50">
+											</div>
+										</div>
+							</div>
+							<div class="row">
+							<div class="col-xs-12 col-sm-4">
+									<div class="form-group label-floating">
+										<label for="password" class="control-label">Contraseña *</label>
+										<input class="form-control"
+											   type="password" 
+											   name="password" id="txtclave" th:value="${datauser.password}">
+									</div>
+							</div>
+										
+								<div class="col-xs-4">
+											<div class="form-group">
+												<label class="control-label">Genero</label>
+												<div class="radio radio-primary">
+													<label>
+														<input   type="radio" name="sexo" id="rbm" value="Masculino">
+														<i class="zmdi zmdi-male-alt"></i> &nbsp; Masculino
+													</label>
+												</div>
+												<div class="radio radio-primary">
+													<label>
+														<input   type="radio" name="sexo" id="rbf" value="Femenino">
+														<i class="zmdi zmdi-female"></i> &nbsp; Femenino
+													</label>
+												</div>
+												<div class="radio radio-primary">
+													<label>
+														<input   type="radio" name="sexo" id="rbo" value="Otro">
+														<i class="zmdi zmdi-female"></i> &nbsp; Prefiero no especificar
+													</label>
+												</div>
+												<div class="invalid-feedback"></div>
+											</div>
+										</div>
+								<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="departamento" class="form-select">Departamento *</label>
+												<select id="departamento"
+												        onchange="onListaProvincia()"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="provincia" class="form-select">Provincia *</label>
+												<select id="provincia"
+														onchange="onListaDistrito()"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="distrito" class="form-select">Distrito *</label>
+												<select id="distrito"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+							</div>
+							<div class="row">
+								<div style="display: inline-block;">
+						            <a sec:authorize="hasRole('ADMIN')" th:if="${datauser.id != null}" th:href="@{/admin/asignaciones}" type="submit" class="btn btn-info btn-raised btn-sm">
+								        <i class="zmdi zmdi-long-arrow-tab zmdi-hc-lg"></i> REGRESAR
+							    	</a>
+								    <a sec:authorize="hasRole('VENDEDOR')" th:else th:href="@{/listaAsignaciones}" type="submit" class="btn btn-info btn-raised btn-sm">
+								        <i class="zmdi zmdi-long-arrow-tab zmdi-hc-lg"></i> REGRESAR
+								    </a>
+								</div>
+								<div class="col-md-2 col-md-offset-4">
+									<button onclick="onProcesar()" type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy"></i> Guardar Cambios</button>
+								</div>
+							</div>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+		var msgOK = [[${mensaje}]]
+		
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		var idDistrito = [[${idDistrito}]]
+		var idProvincia = [[${idProvincia}]]
+		var idDepartamento = [[${idDepartamento}]]
+		var usuario = [[${datauser}]]
+	
+		if(usuario.sexo === "Masculino"){
+			$("#rbm").prop("checked", true)
+		}else if(usuario.sexo === "Femenino"){
+			$("#rbf").prop("checked", true)
+		}else{
+			$("#rbo").prop("checked", true)
+		}
+		
+		async function onListaDepartamento() {
+			await $.ajax({
+				url: '/Api/listaDepartamento',
+				type: 'GET',
+				dataType: 'json',
+				data: { nivel: ''},
+			})
+				.done(function (data) {
+					//console.log(grados)
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].departamento} </option>`
+					}
+					$("#departamento").html(option);
+					if(idDepartamento){
+						$("#departamento").val(idDepartamento);
+						$("#txttelefono").addClass("is-invalid")
+						onListaProvincia();
+					}
+					
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		async function onListaProvincia() {
+			await $.ajax({
+				url: '/Api/listaProvincia',
+				type: 'GET',
+				dataType: 'json',
+				data: { idDepartamento: $("#departamento").val() },
+			})
+				.done(function (data) {
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].provincia} </option>`
+					}
+					$("#provincia").html(option);
+					if(idProvincia){
+						$("#provincia").val(idProvincia);
+						onListaDistrito();
+					}
+					
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		async function onListaDistrito() {
+			await $.ajax({
+				url: '/Api/listaDistrito',
+				type: 'GET',
+				dataType: 'json',
+				data: {  idProvincia: $("#provincia").val() },
+			})
+				.done(function (data) {
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].distrito} </option>`
+					}
+					$("#distrito").html(option);
+					if(idDistrito){
+						$("#distrito").val(idDistrito);
+					}
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		async function onProcesar() {
+			let jsonData = {
+				"id" : $("#txtid").val(),
+				"nombres": $("#txtnombres").val(),
+				"apellidos":$("#txtapellidos").val(),
+				"nombreCompleto": "",
+				"telefono" : $("#txttelefono").val(),
+				"sexo": $('input[name=sexo]:checked').val(),
+				"email": $("#txtemail").val(),
+				"password": $("#txtclave").val(),
+				"codeVerifyrecoverPassword": 1,
+				"preinstall": 0,
+				"distrito":{
+					"id": $("#distrito").val()
+				},
+				"sessionLogin":0,
+			}
+			console.log(jsonData)
+			await $.ajax({
+				url: '/api/v1/updatePerfilLogin',
+				type: 'POST',
+				dataType: 'JSON',
+				data: JSON.stringify(jsonData),
+				contentType: "application/json"
+			})
+			.done(function(resposonse) {
+				console.log(resposonse)
+			})
+			.fail(function(err) {
+				if(err.status == 400){
+					let {errors} = err.responseJSON
+					for (var i = 0; i < errors.length; i++) {
+						if(errors[i].field == "telefono"){
+							$("#errtelefono").html(errors[i].defaultMessage)
+							$("#boxtelefono").addClass("has-error")
+						}
+
+						if(errors[i].field == "nombres"){
+							$("#errnombres").html(errors[i].defaultMessage)
+							$("#boxnombres").addClass("has-error")
+						}
+
+						if(errors[i].field == "apellidos"){
+							$("#errapellidos").html(errors[i].defaultMessage)
+							$("#boxapellidos").addClass("has-error")
+						}
+						
+					}
+				}
+			});
+		}
+		
+		onListaDepartamento();
+	</script>
+	</div>
+</body>
+</html>

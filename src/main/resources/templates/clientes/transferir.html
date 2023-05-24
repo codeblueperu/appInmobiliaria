@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{master.html}">
+<head>
+<title>Clientes</title>
+<meta charset="UTF-8">
+
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left"><a href="#!" class="btn-menu-dashboard"><i
+							class="zmdi zmdi-more-vert"></i></a></li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles">
+						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Usuarios <small>
+							CLIENTES</small>
+					</h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li><a th:href="@{/admin/clientes/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE
+					</a></li>
+					<li><a th:href="@{/admin/clientes}" class="btn btn-success"> <i
+							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE
+							CLIENTES
+					</a></li>
+					<li><a th:href="@{/admin/clientes/buscador}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR CLIENTE
+					</a></li>
+					<li><a th:href="@{/admin/clientes/transpasarclientes}" class="btn btn-yellow">
+							<i class="zmdi zmdi-search"></i> &nbsp; TRANSFERIR CLIENTES
+					</a></li>
+					
+				</ul>
+			</div>
+			
+			
+			<div class="container-fluid">
+				<form th:action="@{/admin/clientes/transpasarclientes}" method="POST">
+					<div class="row">
+						<div class="col-md-12">
+							<form class="well">
+								<!-- Second form content here -->
+								<div class="container-fluid">
+									<form class="well">
+										<div class="row">
+											<div class="col-xs-6 col-sm-6">
+												<div class="form-group label-floating">
+													<label for="idsaliente" class="form-select">Asesor Comercial Saliente *</label>
+													<select id="idsaliente"
+															class="form-control"
+															type="select"
+															name="idsaliente">
+														<option value="">Seleccione un usuario de saliente</option>
+			                                    		<option th:each="usuario : ${listaUsu}" 
+					                                    		th:value="${usuario.id}" 
+					                                    		th:text="${usuario.nombres}">
+			                                    		</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-xs-6 col-sm-6">
+												<div class="form-group label-floating">
+													<label for="identrante" class="form-select">Asesor Comercial Entrante *</label>
+													<select id="identrante"
+															class="form-control"
+															type="select"
+															name="identrante">
+														<option value="">Seleccione un usuario de entrante</option>
+			                                    		<option th:each="usuario : ${listaUsu}" 
+					                                    		th:value="${usuario.id}" 
+					                                    		th:text="${usuario.nombres}">
+			                                    		</option>
+													</select>
+												</div>
+											</div>
+											<div class="col-xs-12">
+												<p class="text-center">
+													<button type="submit" class="btn btn-success btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-filter-list"></i> &nbsp; TRANSFERIR CLIENTES</button>
+												</p>
+											</div>
+										</div>
+									</form>
+								</div>
+							</form>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	
+
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		$("#ulUsuarios").addClass("show-sideBar-SubMenu")
+		
+		$("#liClientes").addClass("active")
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+	</script>
+		
+
+	</div>
+
+
+</body>
+</html>

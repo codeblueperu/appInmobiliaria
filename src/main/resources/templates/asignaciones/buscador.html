@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Asignaciones</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administracion <small> ASIGNACIONES</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/admin/asignaciones/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO ASIGNACION
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/asignaciones}" class="btn btn-success">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ASIGNACIONES
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]
+			</div>
+			<div th:if="${msgError ne null}" class="alert alert-warning mt-3">
+				[[${msgError}]]
+			</div>
+			<div class="row">
+				<div class="col-xs-12 col-sm-4">
+					<div class="container-fluid">
+						<!-- Contenido del primer div -->
+						<div class="container-fluid container-sm">
+							<form class="well">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12">
+										<div class="form-group label-floating">
+											<span class="control-label">¿A quién estas buscando?</span>
+											<input placeholder="Buscar por nombres del Cliente" class="form-control" type="text" name="nombre" th:value="${param.nombre}">
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<p class="text-center">
+											<button type="submit" class="btn btn-primary btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+										</p>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="container-fluid">
+						<!-- Contenido del segundo div -->
+						<div class="container-fluid">
+							<form class="well">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12">
+										<div class="form-group label-floating">
+											<span class="control-label">¿A quién estas buscando?</span>
+											<input placeholder="Buscar por nombres del Asesor" class="form-control" type="text" name="nombreCompleto" th:value="${param.nombreCompleto}">
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-12">
+												<p class="text-center">
+													<button type="submit" class="btn btn-primary btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="container-fluid">
+						<!-- Contenido del tercer div -->
+						<div class="container-fluid">
+							<form class="well">
+								<div class="row">
+									<div class="col-xs-12 col-sm-12" style="display: none;">
+										<div class="form-group label-floating">
+											<span class="control-label">¿A quién estas buscando?</span>
+											<input placeholder="Buscar por nombres del Asesor" class="form-control" type="text" name="nombreCompleto" th:value="${param.nombreCompleto}">
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-12">
+										<div class="form-group label-floating">
+											<label for="estado" class="form-select"> <span class="control-label">Estado</span></label>
+											<select id="estado"
+													class="form-control"
+													type="select"
+													name="estado"
+													th:value="*{param.estado}">
+												<option value="Seleccione una opcion">Seleccione una opcion</option>
+												<option value="ATENDIDO">ATENDIDO</option>
+												<option value="NO ATENDIDO">NO ATENDIDO</option>
+												<option value="RECONTACTAR">RECONTACTAR</option>
+											</select>
+										</div>
+									</div>
+									<div class="col-xs-12">
+										<div class="row">
+											<div class="col-xs-12">
+												<p class="text-center">
+													<button type="submit" class="btn btn-primary btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-filter-list"></i> &nbsp; Filtro</button>
+												</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-6">
+								<h3 class="panel-title"><i class="zmdi zmdi-search"></i> &nbsp; LISTA DE ASIGNACIONES</h3>
+							</div>
+							<div class="col-xs-6 text-right">
+								<button type="button" class="btn btn-primary btn-raised btn-sm" th:value="Limpiar" onclick="limpiarBusqueda()"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar Búsqueda</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+								<tr>
+									<th class="text-center">FECHA REGISTRO</th>
+									<th class="text-center">FECHA ACTUALIZADA</th>
+									<th class="text-center">ESTADO</th>
+									<th class="text-center">CLIENTE</th>
+									<th class="text-center">PROYECTO</th>
+									<th class="text-center">TELEFONO</th>
+									<th class="text-center">ASESOR COMERCIAL</th>
+									<th class="text-center">OPCIONES</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="asignacion : ${asignacionPage.content}" th:object="${asignacion}">
+									<td th:text="*{#temporals.format(creDate, 'dd/MM/yyyy hh:mm a')}"></td>
+									<td th:text="*{#temporals.format(datecreta, 'dd/MM/yyyy hh:mm a')}"></td>
+									<td th:text="*{estado}"></td>
+									<td th:text="*{cliente.nombre}"></td>
+									<td th:text="*{cliente.proyecto}"></td>
+									<td>
+										<a th:href="@{'https://api.whatsapp.com/send?phone=' + *{cliente.telefono}}" title="Whatsapp">
+											<i class="zmdi zmdi-whatsapp" th:href="@{'https://api.whatsapp.com/send?phone=' + *{cliente.telefono}}" th:text="*{cliente.telefono}"></i>
+										</a>
+									</td>
+									<td th:text="*{usuario.nombreCompleto}"></td>
+									<td>
+										<div class="btn btn-group btn-group-sm">
+											<button class="btn btn-primary"
+													th:onclick="openModal([[${asignacion}]])">
+													<i class="zmdi zmdi-comment-alt-text zmdi-hc-lg"></i>
+												</button>
+												<a th:href="@{/admin/asignaciones/{id}/editar(id=*{id})}"
+													title="Editar" class="btn btn-success"> <i
+													class="zmdi zmdi-edit zmdi-hc-lg"></i>
+												</a> <a href="#!" class="btn btn-danger"
+													th:onclick="eliminarAsignacion(this)" title="Eliminar"> <i
+													class="zmdi zmdi-delete zmdi-hc-lg"></i>
+												</a>
+
+												<form
+													th:action="@{/admin/asignaciones/{id}/eliminar(id=*{id})}"
+													method="post">
+												</form>
+										</div>
+									</td>
+								</tr>
+								</tbody>
+
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center" sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+		
+		<div class="modal fade" id="rptModalDetalle" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Detalles</h5>
+					</div>
+					<div class="modal-body">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for="cliente" class="control-label">Cliente *</label>
+									 <input id="txtcliente" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group">
+									<label for=""descripcion"" class="control-label">Descripcion *</label>
+									 <input id="txtdescripcion" class="form-control" type="text">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="form-group ">
+									<label for="observacion" class="control-label">Observaciones *</label>
+									 <input id="observacion" class="form-control" type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- SideBar -->
+
+	
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		
+		$("#ulAdministraciónAdmin").addClass("show-sideBar-SubMenu")
+		
+		$("#liAsignaciones").addClass("active")
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+	</script>
+		<script>
+			function eliminarAsignacion(element) {
+				 swal({	
+					 title:"estas seguro de eliminar esta Asignación?",
+					  text: "una vez eliminado no se podra recuperar.",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Eliminar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+					    swal("no se realizo ningun cambio!");
+					  }
+					});
+            }
+			function limpiarBusqueda(){
+		        window.location='/admin/asignaciones/buscador';
+		    }
+			
+			function openModal(data){
+				console.log(data.cliente)
+				$("#txtcliente").val(data.cliente.nombre)
+				$("#txtdescripcion").val(data.descripcion)
+				$("#observacion").val(data.observaciones)
+				$("#rptModalDetalle").modal('show')
+			}
+		</script>
+
+	</div>
+
+</body>
+</html>

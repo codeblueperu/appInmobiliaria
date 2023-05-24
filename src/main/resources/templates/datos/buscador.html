@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Datos del Cliente</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small> DATOS DEL CLIENTE</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/datos}" class="btn btn-info">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE CLIENTES HABILITADOS
+						</a>
+					</li>
+					<li><a th:href="@{/datos/buscador}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR CLIENTES DESHABILITADOS
+					</a></li>
+				</ul>
+			</div>
+
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]
+			</div>
+			<div th:if="${msgError ne null}" class="alert alert-warning mt-3">
+				[[${msgError}]]
+			</div>
+			<div class="container-fluid">
+				<form class="well">
+					<div class="row">
+						<div class="col-xs-12 col-md-8 col-md-offset-2">
+							<div class="form-group label-floating">
+								<span class="control-label">¿A quién estas buscando?</span>
+								<input placeholder="Buscar por nombres completos del cliente" class="form-control" type="text" name="nombres" th:value="${param.nombres}">
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="submit" class="btn btn-primary btn-raised btn-sm"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+							</p>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="button" class="btn btn-primary btn-raised btn-sm" th:value="Limpiar" th:onclick="limpiarBusqueda()"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar Busqueda</button>
+							</p>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DATOS DEL CLIENTE</h3>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+								<tr>
+									<th class="text-center">NOMBRES/CLIENTE</th>
+									<th class="text-center">TELEFONO</th>
+									<th class="text-center">DNI/CLIENTE</th>
+									<th class="text-center">CORREO</th>
+									<th class="text-center">ESTADO CIVIL</th>
+									<th class="text-center">LUGAR LABORAL</th>
+									<th class="text-center">NOMBRES/CONYUGE</th>
+									<th class="text-center">DNI/CONYUGE</th>
+									<th class="text-center">OPCIONES</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="datos : ${datosPage.content}" th:object="${datos}">
+									<td th:text="*{nombres}"></td>
+									<td>
+										<a th:href="@{'https://api.whatsapp.com/send?phone=' + *{telefono}}" title="Whatsapp">
+											<i class="zmdi zmdi-whatsapp" th:href="@{'https://api.whatsapp.com/send?phone=' + *{telefono}}" th:text="*{telefono}"></i>
+										</a>
+									</td>
+									<td th:text="*{dni}"></td>
+									<td th:text="*{email}"></td>
+									<td th:text="*{estadoCivil}"></td>
+									<td th:text="*{lugarLaboral}"></td>
+									<td th:text="*{nombresConyu}"></td>
+									<td th:text="*{dniConyu}"></td>
+									<td>
+										<div class="btn btn-group btn-group-sm">
+											<a th:href="@{/datos/{id}/editar(id=*{id})}" title="Editar" class="btn btn-primary">
+												<i class="zmdi zmdi-edit"></i>
+											</a>
+											<a  class="btn btn-danger" onclick="eliminarDatos(this)" title="Habilitar">
+												<i class="zmdi zmdi-check-all"></i>
+											</a>
+
+											<form th:action="@{/datos/{id}/habilitar(id=*{id})}" method="post">
+											</form>
+										</div>
+									</td>
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center" sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+	</script>
+		<script th:inline="javascript">
+			function eliminarDatos(element) {
+				swal({
+					 title:"¿Estas seguro de habilitar este CLIENTE?",
+					  text: "Una vez habilitado ya no sera visible en esta vista.",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Habilitar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+						  swal({
+			                    icon: "success",
+			                    title: "No se realizó ningún cambio!",
+			                });
+					  }
+					});
+//                 console.log('elemento', element);
+
+//                 var ok = confirm('¿Está seguro de eliminar el datos del cliente?');
+
+//                 if (ok) {
+//                     element.nextElementSibling.submit();
+//                 }
+            }
+
+            	function limpiarBusqueda(){
+        window.location='/datos';
+        }
+		</script>
+
+	</div>
+
+
+</body>
+</html>

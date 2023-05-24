@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Asignaciones</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administracion <small> ASIGNACIONES</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					
+					<li>
+						<a th:href="@{/admin/asignaciones}" class="btn btn-success">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ASIGNACIONES
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; EDITAR ASIGNACION</h3>
+					</div>
+					<div class="panel-body">
+						<form th:action="@{''}" method="post" th:object="${asignacion}">
+							<fieldset>
+								<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información del Cliente</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="cliente" class="form-select">Nombre del Cliente *</label>
+												<select disabled id="cliente"
+														class="form-control"
+														type="text"
+														name="-reg"
+														required="cliente"
+														th:field="*{cliente}"
+														th:errorclass="is-invalid">
+													<option value="">Seleccione un Cliente</option>
+													<option th:each="cliente : ${listaCli}"
+															th:value="${cliente.id}"
+															th:text="${cliente.nombre}">
+													</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{cliente}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="descripcion" class="control-label">Descripcion *</label>
+												<textarea id="descripcion"
+													   class="form-control"
+													   type="text"
+													   rows="3"
+													   name="descripcion-reg"
+													   required=""
+													   maxlength="200"
+													   th:field="*{descripcion}"
+													   th:errorclass="is-invalid">
+												</textarea>
+
+												<div class="invalid-feedback" th:errors="*{descripcion}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="observaciones" class="control-label">Observaciones *</label>
+												<textarea id="observaciones"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,200}"
+													   class="form-control"
+													   type="text"
+													   rows="3"
+													   name="observaciones-reg"
+													   maxlength="200"
+													   th:field="*{observaciones}"
+													   th:errorclass="is-invalid">
+												</textarea>
+
+												<div class="invalid-feedback" th:errors="*{observaciones}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="estado" class="form-select">Estado *</label>
+												<select id="estado"
+														pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+														class="form-control"
+														type="select"
+														name="estado-reg"
+														maxlength="30"
+														required=""
+														th:field="*{estado}"
+														th:errorclass="is-invalid">
+													<option value="Seleccione una opcion">Seleccione una opcion</option>
+													<option value="ATENDIDO">ATENDIDO</option>
+													<option value="NO ATENDIDO">NO ATENDIDO</option>
+													<option value="RECONTACTAR">RECONTACTAR</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{estado}"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<br>
+							<br>
+							
+							<div class="text-center" style="margin-top: 20px;">
+								<div style="display: inline-block;">
+									<a th:href="@{/listaAsignaciones}" type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-close-circle zmdi-hc-lg"></i> CANCELAR</a>
+								</div>
+								<div style="display: inline-block; margin-left: 10px;">
+									<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy zmdi-hc-lg"></i>  [[${asignacion.id ne null ? 'Actualizar' : 'Guardar'}]] Asignacion</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+</body>
+</html>

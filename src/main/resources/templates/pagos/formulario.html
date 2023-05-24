@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Pagos</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small> PAGOS</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/pagos/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO PAGO
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 id="titulo" class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; NUEVO PAGO</h3>
+					</div>
+					<div class="panel-body">
+						<form th:action="@{''}" method="post" th:object="${pagos}">
+							<fieldset>
+								<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información de pago</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="cuotaInicial" class="control-label">Cuota Inicial *</label>
+												<input id="cuotaInicial"
+													   class="form-control"
+													   type="text"
+													   name="cuotaInicial-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{cuotaInicial}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{cuotaInicial}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="edificio" class="control-label">Edificio *</label>
+												<input id="edificio"
+													   class="form-control"
+													   type="text"
+													   name="edificio-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{edificio}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{edificio}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="creditoHipote" class="control-label">Credito Hipotecario *</label>
+												<input id="creditoHipote"
+													   class="form-control"
+													   type="text"
+													   name="creditoHipote-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{creditoHipote}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{creditoHipote}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="fechaCreHipo" class="control-label">Fecha *</label>
+												<input id="fechaCreHipo"
+													   class="form-control"
+													   type="text"
+													   name="fechaCreHipo-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{fechaCreHipo}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{fechaCreHipo}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="cuotaMensual" class="control-label">Cuota Mensual *</label>
+												<input id="cuotaMensual"
+													   class="form-control"
+													   type="text"
+													   name="cuotaMensual-reg"
+													   maxlength="30"
+													   th:field="*{cuotaMensual}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{cuotaMensual}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="anosCuoMen" class="control-label">Años *</label>
+												<input id="anosCuoMen"
+													   class="form-control"
+													   type="text"
+													   name="anosCuoMen-reg"
+													   maxlength="30"
+													   th:field="*{anosCuoMen}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{anosCuoMen}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="numeroCuenta" class="control-label">Nº de Cuenta *</label>
+												<input id="numeroCuenta"
+													   class="form-control"
+													   type="text"
+													   name="numeroCuenta-reg"
+													   maxlength="30"
+													   th:field="*{numeroCuenta}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{numeroCuenta}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="nombreBanco" class="control-label">Nombre de Banco *</label>
+												<input id="nombreBanco"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="nombreBanco-reg"
+													   maxlength="30"
+													   th:field="*{nombreBanco}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{nombreBanco}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="datos" class="form-select">Cliente *</label>
+												<select id="datos" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+														class="form-control"
+														type="text"
+														name="inmueble-reg"
+														required=""
+														maxlength="30"
+														th:field="*{datos}"
+														th:errorclass="is-invalid">
+													<option value="">Seleccione un Cliente</option>
+													<option th:each="datos : ${listaDatos}"
+															th:value="${datos.id}"
+															th:text="${datos.nombres}">
+													</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{inmueble}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="inmueble" class="form-select">Departamento *</label>
+												<select id="inmueble" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+														class="form-control"
+														type="text"
+														name="inmueble-reg"
+														required=""
+														maxlength="30"
+														th:field="*{inmueble}"
+														th:errorclass="is-invalid">
+													<option value="">Seleccione un Cliente</option>
+													<option th:each="inmueble : ${listaInmueble}"
+															th:value="${inmueble.id}"
+															th:text="${inmueble.departamento}">
+													</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{inmueble}"></div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</fieldset>
+							<br>
+							<div class="text-center" style="margin-top: 20px;">
+								<div style="display: inline-block;">
+										<a th:href="${pagos.id != null} ? '/pagos/' : '/proforma'" type="submit" class="btn btn-info btn-raised btn-sm">
+									   		 <i class="zmdi zmdi-close-circle zmdi-hc-lg"></i> CANCELAR
+										</a>
+								</div>
+								<div style="display: inline-block; margin-left: 10px;">
+									<button th:type="${pagos.id != null || pagos.id == null} ? 'submit' : 'button'" class="btn btn-info btn-raised btn-sm">
+	  							 		<i class="zmdi zmdi-floppy zmdi-hc-lg"></i> [[${pagos.id ne null ? 'Actualizar' : 'Guardar'}]] Pago
+									</button>	
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+	
+	$("#ulRegistro").addClass("show-sideBar-SubMenu")
+	
+	$("#liPagos").addClass("active")
+	
+	
+	
+	// Obtener el elemento del título
+	var tituloElemento = document.getElementById('titulo');
+	
+	// Función para cambiar el título a "NUEVO"
+	function cambiarANuevo() {
+	  tituloElemento.innerHTML = '<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO PAGO';
+	}
+
+	// Función para cambiar el título a "EDITAR"
+	function cambiarAEditar() {
+	  tituloElemento.innerHTML = '<i class="zmdi zmdi-edit"></i> &nbsp; EDITAR PAGO';
+	}
+
+	// Obtener la ruta actual
+	var ruta = window.location.pathname;
+
+	if (ruta === '/pagos/nuevo') {
+	  cambiarANuevo();
+	} else if (ruta.includes('/pagos/') && ruta.includes('/editar')) {
+	  cambiarAEditar();
+	}
+
+	
+	</script>
+	</div>
+</body>
+</html>

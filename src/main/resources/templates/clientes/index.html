@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{master.html}">
+<head>
+<title>Clientes</title>
+<meta charset="UTF-8">
+
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left"><a href="#!" class="btn-menu-dashboard"><i
+							class="zmdi zmdi-more-vert"></i></a></li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles">
+						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Usuarios <small>
+							CLIENTES</small>
+					</h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li><a th:href="@{/admin/clientes/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE
+					</a></li>
+					<li><a th:href="@{/admin/clientes}" class="btn btn-success"> <i
+							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE
+							CLIENTES
+					</a></li>
+					<li><a th:href="@{/admin/clientes/buscador}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR CLIENTE
+					</a></li>
+					<li><a th:href="@{/admin/clientes/transpasarclientes}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; TRANSFERIR CLIENTES
+					</a></li>
+					
+				</ul>
+			</div>
+
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]</div>
+			<div th:if="${msgError ne null}" class="alert alert-warning mt-3">
+				[[${msgError}]]</div>
+				
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6">
+						<form class="well">
+							<!-- First form content here -->
+							<div class="container-fluid">
+								<form class="well">
+									<div class="row">
+										<div class="col-xs-12">
+											<div class="form-group label-floating">
+												<span class="control-label">¿A quién estas buscando?</span>
+												<input placeholder="Buscar por nombre completo" class="form-control" type="text" name="nombres" th:value="${param.nombres}">
+											</div>
+										</div>
+										<div class="col-xs-6">
+											<p class="text-center">
+												<button type="submit" class="btn btn-success btn-raised btn-sm"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+											</p>
+										</div>
+									</div>
+								</form>
+							</div>
+						</form>
+					</div>
+					<div class="col-md-6">
+						<form class="well">
+							<!-- Second form content here -->
+							<div class="container-fluid">
+								<form class="well">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="tipo" class="form-select">Como se entero *</label>
+												<select id="tipo"
+														class="form-control"
+														type="select"
+														name="tipo"
+														th:value="*{param.tipo}">
+													<option value="Seleccione una opcion">Seleccione una opcion</option>
+													<option value="A DONDE VIVIR">A DONDE VIVIR</option>
+													<option value="REDES SOCIALES">REDES SOCIALES</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-12">
+											<p class="text-center">
+												<button type="submit" class="btn btn-success btn-raised btn-sm my-2 my-sm-0"><i class="zmdi zmdi-filter-list"></i> &nbsp; Filtro</button>
+											</p>
+										</div>
+									</div>
+								</form>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<div class="row" style="display: flex; align-items: center;">
+							<div class="col-xs-6">
+								<h3 class="panel-title"><i class="zmdi zmdi-search"></i> &nbsp; LISTA DE CLIENTES</h3>
+							</div>
+							<div class="col-xs-6 text-right">
+								<button type="button" class="btn btn-success btn-raised btn-sm" th:value="Limpiar" th:onclick="limpiarBusqueda()"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar Búsqueda</button>
+							</div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+									<tr>
+										<th class="text-center">FECHA CONTACTO</th>
+										<th class="text-center">NOMBRES</th>
+										<th class="text-center">DNI</th>
+										<th class="text-center">CORREO</th>
+										<th class="text-center">TELEFONO</th>
+										<th class="text-center">COMO SE ENTERO</th>
+										<th class="text-center">TIPO DE PROYECTO</th>
+										<th class="text-center">DIRECCION</th>
+										<th class="text-center">DISTRITO</th>
+										<th class="text-center">ADMINISTRADOR</th>
+										<th class="text-center">OPCIONES</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="cliente : ${clientePage.content}"
+										th:object="${cliente}">
+										<td th:text="*{creadate}"></td>
+										<td th:text="*{nombre}"></td>
+										<td th:text="*{dni}"></td>
+										<td th:text="*{correo}"></td>
+										<td><a
+											th:href="@{'https://api.whatsapp.com/send?phone=' + *{telefono}}"
+											title="Whatsapp"> <i class="zmdi zmdi-whatsapp"
+												th:href="@{'https://api.whatsapp.com/send?phone=' + *{telefono}}"
+												th:text="*{telefono}"></i>
+										</a></td>
+										<td th:text="*{tipo}"></td>
+										<td th:text="*{proyecto}"></td>
+										<td th:text="*{direccion}"></td>
+										<td th:text="*{distrito.distrito}"></td>
+										<td th:text="*{usuario.nombreCompleto}"></td>
+										<td>
+											<div class="btn btn-group btn-group-sm">
+												<a th:href="@{/admin/clientes/{id}/editar(id=*{id})}"
+													title="Editar" class="btn btn-primary"> <i
+													class="zmdi zmdi-edit zmdi-hc-lg"></i>
+												</a> <a href="#!" class="btn btn-danger"
+													th:onclick="eliminarCliente(this)" title="Deshabilitar"> <i
+													class="zmdi zmdi-delete zmdi-hc-lg"></i>
+												</a>
+
+												<form th:action="@{/admin/clientes/{id}/eliminar(id=*{id})}"
+													method="post"></form>
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center"
+									sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	
+
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		$("#ulUsuarios").addClass("show-sideBar-SubMenu")
+		
+		$("#liClientes").addClass("active")
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+	</script>
+		<script>
+			function eliminarCliente(element) {
+				swal({
+					 title:"¿Estas seguro de deshabilitar este CLIENTE?",
+					  text: "Una vez deshabilitado pasará al registro de Buscar Cliente",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Eliminar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+					    	swal({
+		                    	icon: "success",
+		                    	title: "No se realizó ningún cambio!",
+		                	});
+		            	}
+					});
+            }
+			function limpiarBusqueda(){
+		        window.location='/admin/clientes';
+		    }
+		</script>
+
+	</div>
+
+
+</body>
+</html>

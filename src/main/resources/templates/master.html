@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<title>Inicio</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/main.css}">
+	<!-- <link rel="icon" type="image/png" th:href="@{/img/favicon.ico}"> -->
+	<script type="text/javascript" src="https://api.whatsapp.com/send?phone=XXXXXXXXXXXX"></script>
+	<style type="text/css">
+		.contenedor{
+			background:red !Important;
+		}
+	</style>
+
+</head>
+<body>
+	<!-- SideBar -->
+	<section class="full-box cover dashboard-sideBar">
+		<div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
+		<div class="full-box dashboard-sideBar-ct">
+			<!--SideBar Title -->
+			<div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title">
+				MAC INMOBILIARIA <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
+			</div>
+			<!-- SideBar User info -->
+			<div class="full-box dashboard-sideBar-UserInfo">
+				<figure th:if="${dtuser.sexo == 'Masculino'}">
+					<img th:src="@{/assets/avatars/AdminMaleAvatar.png}" alt="UserIcon">
+
+				</figure>
+
+				<figure th:if="${dtuser.sexo == 'Femenino'}">
+					<img th:src="@{/assets/avatars/AdminFemaleAvatar.png}" alt="UserIcon">
+
+				</figure>
+
+				<ul class="full-box list-unstyled text-center">
+					<div sec:authorize="!isAuthenticated()">
+						<a th:href="@{/login}" class="btn btn-primary full-box text-uppercase text-center text-titles dashboard-sideBar-title" style="color:white;">
+							Iniciar sesión
+						</a>
+					</div>
+					<div class="dropdown auth" sec:authorize="isAuthenticated()">
+						<a href="javascript:void(0)" sec:authentication="principal.nombre"  class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="color:white;">
+						</a>
+					</div>
+					<li th:if="${id}" sec:authorize="hasRole('ADMIN')">
+						<a   th:href="@{/perfil/view/{id} (id=*{id})}" class="dropdown-item">
+							<i class="zmdi zmdi-account-circle"></i>
+						</a>
+					</li>
+					
+					<li sec:authorize="hasRole('ADMIN')" th:if="${dtuser.preinstall == 1}")>
+						<a   th:href="@{/admin/setting}" class="dropdown-item">
+							<i class="zmdi zmdi-settings"></i>
+						</a>
+					</li>
+					<li th:if="${id}" sec:authorize="hasRole('VENDEDOR')">
+						<a th:href="@{/perfil/view/{id} (id=*{id})}" title="Mi cuenta">
+							<i class="zmdi zmdi-settings"></i>
+						</a>
+					</li>
+					<li  sec:authorize="hasRole('VENDEDOR') || hasRole('ADMIN')">
+						<a th:href="@{/logoutuser}" class="btn-exit-system dropdown-item" title="Salir del sistema">
+							<i class="zmdi zmdi-power"></i>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<!-- SideBar Menu -->
+			<ul class="list-unstyled full-box dashboard-sideBar-Menu">
+				<li sec:authorize="hasRole('VENDEDOR')">
+					<a href="#!" class="btn-sideBar-SubMenu">
+						<i class="zmdi zmdi-case zmdi-hc-lg"></i> Administracion <i class="zmdi zmdi-caret-down pull-right"></i>
+					</a>
+					<ul class="list-unstyled full-box" id="ulAdministracion">
+						<li>
+							<a id="liListaAsignaciones"  th:href="@{/listaAsignaciones}"><i class="zmdi zmdi-assignment-account zmdi-hc-lg"></i> ListaAsignaciones</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="hasRole('VENDEDOR')">
+					<a href="#!" class="btn-sideBar-SubMenu">
+						<i class="zmdi zmdi-balance zmdi-hc-lg"></i> Registros <i class="zmdi zmdi-caret-down pull-right"></i>
+					</a>
+					<ul class="list-unstyled full-box" id="ulRegistro">
+						<li>
+							<a id="liDatos" th:href="@{/datos}"><i class="zmdi zmdi-accounts zmdi-hc-lg"></i> Datos/Cliente</a>
+						</li>
+						<li>
+							<a id="liInmuebles" th:href="@{/inmuebles}"><i class="zmdi zmdi-home zmdi-hc-lg"></i> Inmuebles</a>
+						</li>
+						<li>
+							<a id="liPagos" th:href="@{/pagos}"><i class="zmdi zmdi-money-box zmdi-hc-lg"></i> Pagos</a>
+						</li>
+						<li>
+							<a id="liProformas" th:href="@{/proforma}"><i class="zmdi zmdi-labels zmdi-hc-lg"></i> Proformas</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="hasRole('ADMIN')">
+					<a href="#!" class="btn-sideBar-SubMenu">
+						<i class="zmdi zmdi-account-add zmdi-hc-fw"></i> Usuarios <i class="zmdi zmdi-caret-down pull-right"></i>
+					</a>
+					<ul class="list-unstyled full-box" id="ulUsuarios">
+						<li>
+							<a id="liAdministradores" th:href="@{/admin/administradores}"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administradores</a>
+						</li>
+						<li>
+							<a id="liAsesores" th:href="@{/admin/usuarios}"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Asesores</a>
+						</li>
+						<li>
+							<a id="liClientes" th:href="@{/admin/clientes}"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Clientes</a>
+						</li>
+					</ul>
+				</li>
+				<li sec:authorize="hasRole('ADMIN')">
+					<a href="#!" class="btn-sideBar-SubMenu">
+						<i class="zmdi zmdi-case zmdi-hc-fw"></i> Administración <i class="zmdi zmdi-caret-down pull-right"></i>
+					</a>
+					<ul class="list-unstyled full-box" id="ulAdministraciónAdmin">
+						<li>
+							<a id="liAsignaciones" th:href="@{/admin/asignaciones}"><i class="zmdi zmdi-labels zmdi-hc-fw"></i> Asignaciones</a>
+						</li>
+						<li>
+							<a id="liInmueblesAdmin" th:href="@{/inmuebles}"><i class="zmdi zmdi-home zmdi-hc-lg"></i> Inmuebles</a>
+						</li>
+					</ul>
+				</li>
+			
+			</ul>
+		</div>
+	</section>
+	<!-- Content page-->
+	<section class="full-box dashboard-contentPage">
+		<!-- NavBar -->
+		<nav class="full-box dashboard-Navbar">
+			<ul class="full-box list-unstyled text-right">
+				<li class="pull-left">
+					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+				</li>
+			</ul>
+		</nav>
+	</section>
+	<section class="contenedor" style="background: red !Important">
+		<div layout:fragment="contenido_personalizado">
+		
+		
+		</div>
+	</section>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<!--====== Scripts <script th:src="@{/js/ripples.min.js}"></script>-->
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+		
+
+	<script>
+		$.material.init();
+		
+		function onBuscarDNI(event){
+			
+			if (event.which === 13) {
+			swal({title: 'Buscando!!',html: 'un momento estamos consultando a RENIEC.....', allowOutsideClick: false})
+				 $.ajax({
+				      url: `https://apiperu.dev/api/dni/${$("#dni").val()}?api_token=8e309f4b60bea04b0775c934f9e961c39329ebf6c58b06f2cc0db2b21714811b`,
+				      type: "GET",
+				      dataType: "json",
+				      data: { operation: "show", buscar: "" },
+				    })
+				      .done(function ({success,data}) {
+				    	  if(!success){
+				    		  swal({type:'warning',title: 'Lo sentimos!!',html: 'no se pudo econtrar el DNI solicitado.', allowOutsideClick: false})
+				    	  }else{
+				    		  swal.close()
+						        $("#nombres").val(`${data.nombres} ${data.apellido_paterno} ${data.apellido_materno}`)
+						        $("#nombre").val(`${data.nombres} ${data.apellido_paterno} ${data.apellido_materno}`)
+				    	  }				    	  
+				  
+				      })
+				      .fail(function (error) {
+				    	  swal({type:'warning',title: 'Lo sentimos!!',html: 'no se pudo econtrar el DNI solicitado.', allowOutsideClick: false})
+				        console.log(error);
+				      });
+				event.preventDefault(false)
+		    }
+			 
+		}
+	</script>
+
+	<div layout:fragment="scripts" th:remove="tag">
+
+	</div>
+</body>
+</html>

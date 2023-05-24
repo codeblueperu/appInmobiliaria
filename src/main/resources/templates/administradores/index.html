@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Administradores</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Usuarios <small>ADMINISTRADORES</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li th:if="${datalogin.preinstall} == 1">
+						<a th:href="@{/admin/administradores/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO ADMINISTRADOR
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/administradores}" class="btn btn-success">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ADMINISTRADORES
+						</a>
+					</li>
+				</ul>
+			</div>
+			
+			<div class="container-fluid">
+				<form class="well">
+					<div class="row">
+						<div class="col-xs-12 col-md-8 col-md-offset-2">
+							<div class="form-group label-floating">
+								<span class="control-label">¿A quién estas buscando?</span>
+								<input placeholder="Buscar por nombre completo" class="form-control" type="text" name="nombreCompleto" th:value="${param.nombreCompleto}">
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="submit" class="btn btn-success btn-raised btn-sm"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+							</p>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="button" class="btn btn-success btn-raised btn-sm" th:value="Limpiar" th:onclick="limpiarBusqueda()"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar Busqueda</button>
+							</p>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ADMINISTRADORES</h3>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+								<tr>
+									<th class="text-center">NOMBRES</th>
+									<th class="text-center">APELLIDOS</th>
+									<th class="text-center">NOMBRE COMPLETO</th>
+									<th class="text-center">TELEFONO</th>
+									<th class="text-center">SEXO</th>
+									<th class="text-center">EMAIL</th>
+									<th class="text-center">ROL</th>
+									<th class="text-center">DISTRITO</th>
+									<th th:if="${datalogin.preinstall} == 1" class="text-center">OPCIONES</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="usuario : ${usuarioPage.content}" th:object="${usuario}">
+									<td th:text="*{nombres}"></td>
+									<td th:text="*{apellidos}"></td>
+									<td th:text="*{nombreCompleto}"></td>
+									<td th:text="*{telefono}"></td>
+									<td th:text="*{sexo}"></td>
+									<td th:text="*{email}"></td>
+									<td th:text="*{rol}"></td>
+									<td th:text="*{distrito.distrito}"></td>
+									<td>
+										<div class="btn btn-group btn-group-sm" th:if="${datalogin.preinstall} == 1">
+											<a th:href="@{/admin/administradores/{id}/editar(id=*{id})}" title="Editar" class="btn btn-primary">
+												<i class="zmdi zmdi-edit zmdi-hc-lg"></i>
+											</a>
+											
+										</div>
+									</td>
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center" sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		
+		$("#ulUsuarios").addClass("show-sideBar-SubMenu")
+		
+		$("#liAdministradores").addClass("active")
+		
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+		
+		function eliminarUsuario(element) {
+            console.log('elemento', element);
+            
+            swal({
+				 title:"¿Estas seguro de eliminar al ADMINISTRADOR?",
+				  text: "Una vez eliminado no se podra recuperar.",
+				  icon: "warning",
+				  closeOnClickOutside: false,
+				  dangerMode: true,
+				  buttons: {
+					  cancel: {
+						    text: "No",
+						    visible: true,
+						    closeModal: true,
+						  },
+						  confirm: {
+						    text: "Si, Eliminar",
+						    value: true,
+						    visible: true,
+						    closeModal: true
+						  }
+						}
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+					  element.nextElementSibling.submit();
+				  } else {
+					  swal({
+		                    icon: "success",
+		                    title: "No se realizó ningún cambio!",
+		                });
+				  }
+				});
+
+        }
+		
+		function limpiarBusqueda(){
+	        window.location='/admin/administradores';
+	    }
+		</script>
+		
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Iniciar sesion</title>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<link rel="stylesheet" th:href="@{/css/main.css}">
+<style type="text/css">
+.wform {
+	width: 60% !Important;
+	max-width: 100%;
+	background: #FFF !Important;
+	color: #000 !Important;
+}
+.login-container{
+	height: 100%;
+	background-image: url(../assets/img/sideBar.png) !Important;
+}
+
+p{
+color: #000 !Important;
+}
+</style>
+</head>
+<body>
+	<div class="full-box login-container cover">
+		<form th:action="@{/create/count/user}" method="post"
+			th:object="${usuario}" class="logInForm wform">
+			<p class="text-center text-muted">
+				<i class="zmdi zmdi-account-circle zmdi-hc-5x"></i>
+			</p>
+			<p class="text-center text-muted text-uppercase">CREACION DE
+				CUENTA SUPER ADMINISTRADOR</p>
+			<div class="row">
+				<div class="col-xs-12 col-sm-6">
+					<div class="form-group label-floating" style="color:#000 !Important">
+						<label style="color:#3e3e3e !Important;font-weight: bold" for="nombres" class="control-label">Nombres *</label> <input
+							id="nombres" autocomplete="off"
+							pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}" class="form-control"
+							type="text" name="nombre-reg" required="" maxlength="30"
+							th:field="*{nombres}" th:errorclass="is-invalid">
+
+						<div class="invalid-feedback" th:errors="*{nombres}"></div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-6">
+					<div class="form-group label-floating">
+						<label style="color:#3e3e3e !Important;font-weight: bold" for="apellidos" class="control-label">Apellidos *</label> <input
+							id="apellidos" autocomplete="off"
+							pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}" class="form-control"
+							type="text" name="apellido-reg" required="" maxlength="30"
+							th:field="*{apellidos}" th:errorclass="is-invalid">
+
+						<div class="invalid-feedback" th:errors="*{apellidos}"></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="row">
+			<div class="col-xs-12 col-sm-4">
+					<div class="form-group label-floating">
+						<label style="color:#3e3e3e !Important;font-weight: bold" for="telefono" class="control-label">Teléfono</label> <input
+							id="telefono" autocomplete="off" pattern="[0-9+]{1,15}"
+							class="form-control" type="text" name="telefono-reg"
+							maxlength="15" th:field="*{telefono}" th:errorclass="is-invalid">
+
+						<div class="invalid-feedback" th:errors="*{telefono}"></div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="form-group label-floating">
+						<label style="color:#3e3e3e !Important;font-weight: bold" for="email" class="control-label">E-mail</label> <input
+							id="email" autocomplete="off" class="form-control" type="email"
+							name="email-reg" maxlength="50" th:field="*{email}"
+							th:errorclass="is-invalid">
+
+						<div class="invalid-feedback" th:errors="*{email}"></div>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-4">
+					<div class="form-group label-floating">
+						<label style="color:#3e3e3e !Important;font-weight: bold" for="password" class="control-label">Contraseña *</label> <input
+							id="password" autocomplete="off" class="form-control"
+							type="password" name="password1-reg" required="" maxlength="70"
+							th:field="*{password}" th:errorclass="is-invalid">
+
+						<div class="invalid-feedback" th:errors="*{password}"></div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="form-group">
+						<label style="color:#3e3e3e !Important;font-weight: bold" class="control-label">Genero</label>
+						<div class="" style="color:#3e3e3e !Important;font-weight: bold">
+							<label style="color:#3e3e3e !Important;font-weight: bold"> <input th:field="*{sexo}"
+								th:errorclass="is-invalid" type="radio" name="optionsGenero"
+								id="optionsRadios1" value="Masculino" checked=""> <i
+								class="zmdi zmdi-male-alt"></i> &nbsp; Masculino
+							</label>
+						</div>
+						<div class="">
+							<label style="color:#3e3e3e !Important;font-weight: bold"> <input th:field="*{sexo}"
+								th:errorclass="is-invalid" type="radio" name="optionsGenero"
+								id="optionsRadios2" value="Femenino"> <i
+								class="zmdi zmdi-female"></i> &nbsp; Femenino
+							</label>
+						</div>
+						<div class="">
+							<label style="color:#3e3e3e !Important;font-weight: bold"> <input th:field="*{sexo}"
+								th:errorclass="is-invalid" type="radio" name="optionsGenero"
+								id="optionsRadios3" value="Femenino"> <i
+								class="zmdi zmdi-female"></i> &nbsp; Prefiero no especificar
+							</label>
+						</div>
+						<div class="invalid-feedback" th:errors="*{sexo}"></div>
+					</div>
+				</div>
+<!-- 				<div class="col-xs-12 col-sm-6"> -->
+<!-- 					<div class="form-group label-floating"> -->
+<!-- 						<label style="color:#3e3e3e !Important;font-weight: bold" for="ubigeo" class="form-select">Ubigeo *</label> <select -->
+<!-- 							id="ubigeo" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}" -->
+<!-- 							class="form-control" type="text" name="apellido-reg" required="" -->
+<!-- 							maxlength="30" > -->
+<!-- 							<option value="">Seleccione un Ubigeo/Distrito</option> -->
+<!-- 							<option th:each="ubigeo : ${listaUbi}" th:value="${ubigeo.id}" -->
+<!-- 								th:text="${ubigeo.distrito}"></option> -->
+<!-- 						</select> -->
+						
+<!-- 					</div> -->
+<!-- 				</div> -->
+			</div>
+			<div class="form-group text-center">
+				<input type="submit" value="Crear cuenta ahora" class="btn btn-success"
+					style="color: #000;">
+			</div>
+		</form>
+
+
+	</div>
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+<!-- 	<script th:src="@{/js/sweetalert2.min.js}"></script> -->
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	<script th:inline="javascript">
+		var status = [[${redirect}]]
+		
+		if(status == "OK"){
+			let timerInterval
+			Swal.fire({
+			  title: 'Todo salio muy bien!',
+			  html: 'la instalacion terminara en breve y procederas a ingresar con tu cuenta que as creado recientemente.',
+			  timer: 5000,
+			  timerProgressBar: true,
+			  didOpen: () => {
+			    Swal.showLoading()
+			    const b = Swal.getHtmlContainer().querySelector('b')
+			    timerInterval = setInterval(() => {
+			      b.textContent = Swal.getTimerLeft()
+			    }, 10000)
+			  },
+			  willClose: () => {
+			    clearInterval(timerInterval)
+			  }
+			}).then((result) => {
+			  /* Read more about handling dismissals below */
+			  if (result.dismiss === Swal.DismissReason.timer) {
+				 // window.location.href = "/login"
+			  }
+			})
+		}
+	</script>
+</body>
+</html>

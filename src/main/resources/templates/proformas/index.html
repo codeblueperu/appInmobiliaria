@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{master.html}">
+<head>
+<title>Proformas</title>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard">
+							<i class="zmdi zmdi-more-vert"></i>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles">
+						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small>
+							PROFORMAS</small>
+					</h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+				
+			        <li>
+						<a th:href="@{/inmuebles}" class="btn btn-warning"> <i
+							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE INMUEBLES
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/datos/nuevo}" class="btn btn-info"> <i
+							class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE
+						</a>
+					</li>
+					
+					<li>
+						<a th:href="@{/pagos/nuevo}" class="btn btn-primary"> <i
+							class="zmdi zmdi-plus"></i> &nbsp; NUEVO PAGO
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/proforma/nuevo}" class="btn btn-danger"> <i
+							class="zmdi zmdi-plus"></i> &nbsp; NUEVA PROFORMA
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/proforma}" class="btn btn-success"> <i
+							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE PROFORMA
+						</a>
+					</li>
+				</ul>
+			</div>
+
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]
+			</div>
+			<div th:if="${msgExitoPago ne null}" class="alert alert-success mt-3">
+				[[${msgExitoPago}]]
+			</div>
+			<div th:if="${msgExitoDatos ne null}"
+				class="alert alert-success mt-3">
+				[[${msgExitoDatos}]]
+			</div>
+			<div th:if="${msgExitoInmueble ne null}"
+				class="alert alert-success mt-3">
+				[[${msgExitoInmueble}]]
+			</div>
+			<div th:if="${msgError ne null}" class="alert alert-success mt-3">
+				[[${msgError}]]
+			</div>
+
+			<div class="container-fluid">
+				<form class="well">
+					<div class="row">
+						<div class="col-xs-12 col-md-8 col-md-offset-2">
+							<div class="form-group label-floating">
+								<span class="control-label">¿A quién estas buscando?</span> <input
+									placeholder="Buscar por DNI del cliente" class="form-control"
+									type="text" name="dni" th:value="${param.dni}">
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="submit" class="btn btn-success btn-raised btn-sm">
+									<i class="zmdi zmdi-search"></i> &nbsp; Buscar
+								</button>
+							</p>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="button" class="btn btn-success btn-raised btn-sm"
+									th:value="Limpiar" th:onclick="limpiarBusqueda()">
+									<i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar
+									Busqueda
+								</button>
+							</p>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE
+							PROFORMAS
+						</h3>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+									<tr>
+										<th class="text-center">FECHA REGISTRO</th>
+										<th class="text-center">COMO SE ENTERO</th>
+										<th class="text-center">CLIENTE</th>
+										<th class="text-center">DNI</th>
+										<th class="text-center">TELEFONO</th>
+										<th class="text-center">DEPARTAMENTO</th>
+										<th class="text-center">PROYECTO</th>
+										<th class="text-center">BANCO</th>
+										<th class="text-center">ASESOR</th>
+										<th class="text-center">OPCIONES</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="proforma : ${proformaPage.content}"
+										th:object="${proforma}">
+										<td th:text="*{fechaProforma}"></td>
+										<td th:text="*{enteroProyecto}"></td>
+										<td th:text="*{pago.datos.nombres}"></td>
+										<td th:text="*{pago.datos.dni}"></td>
+										<td>
+											<a
+											th:href="@{'https://api.whatsapp.com/send?phone=' + *{pago.datos.telefono}}"
+											title="Whatsapp"> <i class="zmdi zmdi-whatsapp"
+												th:href="@{'https://api.whatsapp.com/send?phone=' + *{pago.datos.telefono}}"
+												th:text="*{pago.datos.telefono}"></i>
+											</a>
+										</td>
+										<td th:text="*{pago.inmueble.departamento}"></td>
+										<td th:text="*{pago.inmueble.proyecto}"></td>
+										<td th:text="*{pago.nombreBanco}"></td>
+										<td th:text="*{usuario.nombreCompleto}"></td>
+										<td>
+											<div class="btn btn-group btn-group-sm">
+												<button class="btn btn-primary"
+													th:onclick="onMostrarReporte([[${proforma.id}]])">
+													<i class="zmdi zmdi-print"></i>
+												</button>
+												<a th:href="@{/proforma/{id}/editar(id=*{id})}"
+													title="Editar" class="btn btn-primary"> <i
+													class="zmdi zmdi-edit"></i>
+												</a> <a href="#!" class="btn btn-danger"
+													onclick="eliminarProforma(this)" title="Eliminar"> <i
+													class="zmdi zmdi-delete"></i>
+												</a>
+
+												<form th:action="@{/proforma/{id}/eliminar(id=*{id})}"
+													method="post"></form>
+											</div>
+										</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center"
+									sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+
+
+		</section>
+		<div class="modal fade" id="rptModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">REPORTE
+							PROFORMA</h5>
+					</div>
+					<div class="modal-body">
+						<iframe id="rptframe" src=""
+							style="width: 100%; height: 100vh; border: none; margin: 0; padding: 0; overflow: hidden; z-index: 999999;">
+						</iframe>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		$("#ulRegistro").addClass("show-sideBar-SubMenu")
+		
+		$("#liProformas").addClass("active")
+			var msgExito = [[${msgExito}]];	
+			
+			var msgExitoPago = [[${msgExitoPago}]];
+			
+			var msgExitoDatos = [[${msgExitoDatos}]];
+			
+			var msgExitoInmueble = [[${msgExitoInmueble}]];
+			
+			var msgError = [[${msgError}]];
+			
+			//console.log(msgOK)
+			
+			if(msgExito){			
+				swal({"icon": "success", "title": "Muy Bien!", "text": msgExito})
+			}
+			
+			if(msgExitoPago){			
+				swal({"icon": "success", "title": "Muy Bien!", "text": msgExitoPago})
+			}
+			
+			if(msgExitoDatos){			
+				swal({"icon": "success", "title": "Muy Bien!", "text": msgExitoDatos})
+			}
+			
+			if(msgExitoInmueble){			
+				swal({"icon": "success", "title": "Muy Bien!", "text": msgExitoInmueble})
+			}
+			
+			if(msgError){			
+				swal({"icon": "success", "title": "Muy Bien!", "text": msgError})
+			}
+			
+			function eliminarProforma(element) {
+				swal({	
+					 title:"¿Estas seguro de eliminar esta proforma?",
+					  text: "una vez eliminado no se podra recuperar.",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Eliminar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+						  swal({
+			                    icon: "success",
+			                    title: "No se realizó ningún cambio!",
+			                });
+					  }
+					});
+            }
+            function limpiarBusqueda(){
+		        window.location='/proforma';
+		    }
+            
+            function onMostrarReporte(id){
+            	$("#rptModal").modal('show');
+//             	window.open(
+//             		    "ajax/rptfichareparacion.ajax.php?token=" + id,
+//             		    "",
+//             		    "location=no,menubar=no,titlebar=no,resizable=no,toolbar=no,scrollbars=yes,width=700,height=540"
+//             		  );
+			var getUrl = window.location;
+					$("#rptframe").attr('src',  getUrl.protocol + "//" + getUrl.host +'/report/proforma?id='+id)
+            }
+            
+		</script>
+
+	</div>
+
+
+</body>
+</html>

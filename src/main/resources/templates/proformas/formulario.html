@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Proforma</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small> PROFORMAS</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/proforma/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVA PROFORMA
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; NUEVA PROFORMA</h3>
+					</div>
+					<div class="panel-body">
+						<form th:action="@{''}" method="post" th:object="${proforma}">
+							<fieldset>
+								<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información de proforma</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="enteroProyecto" class="form-select">Como se entero *</label>
+												<select id="enteroProyecto"
+														pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+														class="form-control"
+														type="select"
+														name="select-reg"
+														maxlength="30"
+														required=""
+														th:field="*{enteroProyecto}"
+														th:errorclass="is-invalid">
+													<option value="Seleccione una opcion">Seleccione una opcion</option>
+													<option value="A DONDE VIVIR">A DONDE VIVIR</option>
+													<option value="REDES SOCIALES">REDES SOCIALES</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{enteroProyecto}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="fechaProforma" class="control-date">Fecha Registro *</label>
+												<input id="fechaProforma"
+													   pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="date"
+													   name="date-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{fechaProforma}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{fechaProforma}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="pago" class="form-select">Cliente *</label>
+												<select id="pago" pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+														class="form-control"
+														type="text"
+														name="pago-reg"
+														required=""
+														maxlength="30"
+														th:field="*{pago}"
+														th:errorclass="is-invalid">
+													<option value="">Seleccione un Cliente</option>
+													<option th:each="pago : ${listaPago}"
+															th:value="${pago.id}"
+															th:text="${pago.datos.nombres}">
+													</option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{pago}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="usuario" class="form-select">Nombre del Asesor *</label>
+												<select id="usuario"
+														class="form-control"
+														type="text"
+														name="usuario-reg"
+														th:field="*{usuario}"
+														th:errorclass="is-invalid">
+													<option value="">Seleccione un Asesor Comercial</option>
+													<option th:each="usuario : ${listaUsuario}"
+															th:value="${usuario.id}"
+															th:text="${usuario.nombreCompleto}"></option>
+												</select>
+												<div class="invalid-feedback" th:errors="*{usuario}"></div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-md-12">
+											<label for="usuario" class="form-select">Observaciones</label>
+											<textarea rows="1" cols="2" class="form-control" id="observaciones" name="observaciones" th:field="*{observaciones}"></textarea>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<br>
+							<div class="text-center" style="margin-top: 20px;">
+								<div style="display: inline-block;">
+									<a th:href="@{/proforma}" type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-close-circle zmdi-hc-lg"></i> CANCELAR</a>
+								</div>
+								<div style="display: inline-block; margin-left: 10px;">
+									<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy zmdi-hc-lg"></i> [[${proforma.id ne null ? 'Actualizar' : 'Guardar'}]] Proforma</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+</body>
+</html>

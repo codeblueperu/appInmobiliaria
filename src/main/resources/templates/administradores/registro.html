@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Administradores</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Usuarios <small>ADMINISTRADORES</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/admin/administradores/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO ADMINISTRADOR
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/administradores}" class="btn btn-success">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE ADMINISTRADORES
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; NUEVO ADMINISTRADOR</h3>
+					</div>
+					<div class="panel-body">
+						<form th:action="@{''}" method="post" th:object="${usuario}">
+							<fieldset>
+								<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información personal</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="nombres" class="control-label">Nombres *</label>
+												<input id="nombres"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="nombre-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{nombres}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{nombres}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="apellidos" class="control-label">Apellidos *</label>
+												<input id="apellidos"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="apellido-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{apellidos}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{apellidos}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="telefono" class="control-label">Teléfono</label>
+												<input id="telefono"  pattern="[0-9+]{1,15}"
+													   class="form-control"
+													   type="text"
+													   name="telefono-reg"
+													   maxlength="15"
+													   th:field="*{telefono}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{telefono}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="departamento" class="form-select">Departamento *</label>
+												<select id="departamento"
+												        onchange="onListaProvincia()"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="provincia" class="form-select">Provincia *</label>
+												<select id="provincia"
+														onchange="onListaDistrito()"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="distrito" class="form-select">Distrito *</label>
+												<select id="distrito"
+														th:field="*{distrito}"
+														class="form-control">
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<br>
+							<fieldset>
+								<legend><i class="zmdi zmdi-key"></i> &nbsp; Datos de la cuenta</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="email" class="control-label">E-mail</label>
+												<input id="email"  class="form-control"
+													   type="email"
+													   name="email-reg"
+													   maxlength="50"
+													   th:field="*{email}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{email}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="password1" class="control-label">Contraseña *</label>
+												<input id="password1"  class="form-control"
+													   type="password"
+													   name="password1-reg"
+													   maxlength="70"
+													   th:field="*{password1}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{password1}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="password2" class="control-label">Repita la contraseña *</label>
+												<input id="password2"  class="form-control"
+													   type="password"
+													   name="password2-reg"
+													   maxlength="70"
+													   th:field="*{password2}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{password2}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12">
+											<div class="form-group">
+												<label class="control-label">Genero</label>
+												<div class="radio radio-primary">
+													<label>
+														<input th:field="*{sexo}" th:errorclass="is-invalid" type="radio" name="optionsGenero" id="optionsRadios1" value="Masculino" checked="">
+														<i class="zmdi zmdi-male-alt"></i> &nbsp; Masculino
+													</label>
+												</div>
+												<div class="radio radio-primary">
+													<label>
+														<input th:field="*{sexo}" th:errorclass="is-invalid" type="radio" name="optionsGenero" id="optionsRadios2" value="Femenino">
+														<i class="zmdi zmdi-female"></i> &nbsp; Femenino
+													</label>
+												</div>
+												<div class="radio radio-primary">
+													<label>
+														<input th:field="*{sexo}" th:errorclass="is-invalid" type="radio" name="optionsGenero" id="optionsRadios3" value="Femenino">
+														<i class="zmdi zmdi-female"></i> &nbsp; Prefiero no especificar
+													</label>
+												</div>
+												<div class="invalid-feedback" th:errors="*{sexo}"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<br>
+							<div class="text-center" style="margin-top: 20px;">
+								<div style="display: inline-block;">
+									<a th:href="@{/admin/administradores}" type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-close-circle zmdi-hc-lg"></i> CANCELAR</a>
+								</div>
+								<div style="display: inline-block; margin-left: 10px;">
+									<button type="submit" class="btn btn-info btn-raised btn-sm"><i class="zmdi zmdi-floppy zmdi-hc-lg"></i> [[${usuario.id ne null ? 'Actualizar' : 'Guardar'}]] Administrador</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		
+		$("#ulUsuarios").addClass("show-sideBar-SubMenu")
+		
+		$("#liAdministradores").addClass("active")
+		
+	
+		var idDistrito = [[${idDistrito}]]
+		var idProvincia = [[${idProvincia}]]
+		var idDepartamento = [[${idDepartamento}]]
+		
+		async function onListaDepartamento() {
+			await $.ajax({
+				url: '/Api/listaDepartamento',
+				type: 'GET',
+				dataType: 'json',
+				data: { nivel: ''},
+			})
+				.done(function (data) {
+					//console.log(grados)
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].departamento} </option>`
+					}
+					$("#departamento").html(option);
+					if(idDepartamento){
+						$("#departamento").val(idDepartamento);
+						onListaProvincia();
+					}
+					
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		async function onListaProvincia() {
+			await $.ajax({
+				url: '/Api/listaProvincia',
+				type: 'GET',
+				dataType: 'json',
+				data: { idDepartamento: $("#departamento").val() },
+			})
+				.done(function (data) {
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].provincia} </option>`
+					}
+					$("#provincia").html(option);
+					if(idProvincia){
+						$("#provincia").val(idProvincia);
+						onListaDistrito();
+					}
+					
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		async function onListaDistrito() {
+			await $.ajax({
+				url: '/Api/listaDistrito',
+				type: 'GET',
+				dataType: 'json',
+				data: {  idProvincia: $("#provincia").val() },
+			})
+				.done(function (data) {
+					let option = `<option value="">---: SELECCIONE :---</option>`
+					for (var i = 0; i < data.length; i++) {
+						option += `<option value="${data[i].id}">${data[i].distrito} </option>`
+					}
+					$("#distrito").html(option);
+					if(idDistrito){
+						$("#distrito").val(idDistrito);
+					}
+				})
+				.fail(function (err) {
+					console.log(err);
+					
+				});
+		}
+		
+		onListaDepartamento();
+		</script>
+	</div>
+</body>
+</html>

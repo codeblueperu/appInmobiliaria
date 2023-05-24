@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Ubigeos</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Administracion<small> UBIGEOS</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/admin/ubigeos/nuevo}" class="btn btn-info">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO UBIGEO
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/ubigeos}" class="btn btn-success">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE UBIGEOS
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/admin/ubigeos/buscador}" class="btn btn-primary">
+							<i class="zmdi zmdi-search"></i> &nbsp; BUSCAR UBIGEO
+						</a>
+					</li>
+				</ul>
+			</div>
+
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]
+			</div>
+			<div th:if="${msgError ne null}" class="alert alert-warning mt-3">
+				[[${msgError}]]
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-success">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE UBIGEOS</h3>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+								<tr>
+									<th class="text-center">DEPARTAMENTO</th>
+									<th class="text-center">PROVINCIA</th>
+									<th class="text-center">DISTRITO</th>
+									<th class="text-center">OPCIONES</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="ubigeo : ${ubigeoPage.content}" th:object="${ubigeo}">
+									<td th:text="*{departamento}"></td>
+									<td th:text="*{provincia}"></td>
+									<td th:text="*{distrito}"></td>
+									<td>
+										<div class="btn btn-group btn-group-sm">
+											<a th:href="@{/admin/ubigeos/{id}/editar(id=*{id})}" title="Editar" class="btn btn-primary">
+												<i class="zmdi zmdi-edit"></i>
+											</a>
+											<a href="#!"  class="btn btn-danger" onclick="eliminarUbigeo(this)" title="Eliminar">
+												<i class="zmdi zmdi-delete"></i>
+											</a>
+
+											<form th:action="@{/admin/ubigeos/{id}/eliminar(id=*{id})}" method="post">
+											</form>
+										</div>
+									</td>
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center" sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+	
+	$("#ulAdministraciónAdmin").addClass("show-sideBar-SubMenu")
+	
+	$("#liUbigeos").addClass("active")
+		var msgOK = [[${msgExito}]];
+		var msgError = [[${msgError}]];
+		console.log(msgOK);
+		if (msgOK) {
+  			swal({
+    		icon: "success",
+    		title: "Muy Bien",
+    		text: msgOK,
+    		buttonsStyling: false, // Desactiva el estilo predeterminado de los botones
+    		customClass: {
+      		confirmButton: "btn btn-info btn-raised", // Agrega tu clase personalizada para el botón OK
+    		},
+  			});
+		}
+		if (msgError) {
+  			swal({
+    			icon: "error",
+    			title: "Algo salio mal",
+    			text: msgError,
+				buttonsStyling: false,
+    			customClass: {
+     			confirmButton: "btn btn-info btn-raised",
+    			},
+  			});
+		}
+	</script>
+		<script>
+			function eliminarUbigeo(element) {
+				swal({	
+					 title:"¿Estas seguro de eliminar este UBIGEO?",
+					  text: "Una vez eliminado no se podra recuperar.",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Eliminar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+					    swal("No se realizó ningun cambio!");
+					  }
+					});
+//                 console.log('elemento', element);
+
+//                 var ok = confirm('¿Está seguro de eliminar el ubigeo?');
+
+//                 if (ok) {
+//                     element.nextElementSibling.submit();
+//                 }
+            }
+		</script>
+
+	</div>
+
+
+</body>
+</html>

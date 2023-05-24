@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es-ES" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{master.html}">
+<head>
+<title>Asesores Comerciales</title>
+<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section"
+		layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left"><a href="#!" class="btn-menu-dashboard"><i
+							class="zmdi zmdi-more-vert"></i></a></li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles">
+						<i class="zmdi zmdi-account zmdi-hc-fw"></i> Configuraciones <small>Mi
+							Servidor de correo</small>
+					</h1>
+				</div>
+			</div>
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+
+					<div class="panel-body">
+						<form th:action="@{/admin/update}" method="post"
+							th:object="${setting}">
+							<input type="hidden" name="id" th:field="*{idConfiguraciones}">
+							<div class="row">
+								<div class="col-xs-12 col-sm-3">
+									<div class="form-group label-floating">
+										<label for="nombres" class="control-label">Host Email
+											*</label> <input class="form-control" type="text" required
+											name="nombres" th:field="*{hostEmail}">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+									<div class="form-group label-floating">
+										<label for="nombres" class="control-label">Usuario
+											Email *</label> <input class="form-control" type="text"
+											name="apellidos" required th:field="*{userEmail}">
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-3">
+									<div class="form-group label-floating">
+										<label for="nombres" class="control-label">Contraseña
+											Email Email</label> <input class="form-control" type="text" required
+											name="telefono" th:field="*{passwordEmail}">
+									</div>
+								</div>
+
+								<div class="col-xs-12 col-sm-4">
+									<div class="form-group label-floating">
+										<label for="password" class="control-label">Puerto
+											Email *</label> <input class="form-control" type="number"
+											name="puetroEmail" th:field="*{puetroEmail}">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2 col-md-offset-4">
+									<button type="submit" class="btn btn-info btn-raised btn-sm">
+										<i class="zmdi zmdi-floppy"></i> Guardar Cambios
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+		<script th:inline="javascript">
+		var msgOK = [[${mensaje}]]
+		
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+	</script>
+	</div>
+</body>
+</html>

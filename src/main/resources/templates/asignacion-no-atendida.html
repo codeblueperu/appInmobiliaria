@@ -1,0 +1,93 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="en">
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <style>
+
+        html {
+            height: 100%;
+        }
+
+        .mk-container{
+            padding-top:20px;
+            text-size-adjust:none;
+        }
+
+        .mk-container-logo{
+            padding-bottom: 20px;
+            text-align:center;
+        }
+
+        .mk-logo {
+            width: 250px;
+        }
+
+        .mk-container-welcome{
+            padding-top:20px;
+            overflow: hidden;
+            width: 45vw;
+            margin: 0 auto;
+            background-color:#fff;
+            border-radius:30px;
+        }
+
+        .mk-text-center{
+            text-align:center;
+        }
+
+        .mk-color-black{
+            color: black;
+        }
+
+        .mk-p-welcome{
+            font-size:21px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .mk-p-cotiza{
+            font-size:16px;
+            font-weight: 700;
+            margin: 5px auto;
+            width: 80%;
+        }
+
+        .mk-container-change{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mk-change {
+            margin: 30px auto;
+            text-decoration: none;
+            align-items: center;
+            font-weight: 700;
+            border-radius: 20px;
+            background-color: rgb(255, 204, 0);
+            padding: 10px;
+            width: 220px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+<div class="mk-container">
+    <div class="mk-container-welcome">
+        <div class="mk-container-logo">
+            <img class="mk-logo" src="https://i.postimg.cc/9XvYQ1t6/logo-morenolinch.png">
+        </div>
+        <div class="mk-text-center">
+            <p class="mk-p-welcome mk-color-black">Hola <a th:text="${name}"></a>, aun cuentas con clientes no atendidos y/o recontactar</p>
+            <p class="mk-p-cotiza mk-color-black">Por favor ingresa a la plataforma para terminar tus asignaciones.</p>
+        </div>
+        <div class="mk-container-change">
+            <a class="mk-change"  href="http://localhost:8080/login">INGRESAR</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

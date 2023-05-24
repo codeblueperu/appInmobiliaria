@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Pagos</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<div layout:fragment="contenido_personalizado">
+
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small> PAGOS</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+					<li>
+						<a th:href="@{/datos}" class="btn btn-primary">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE PAGOS
+						</a>
+					</li>
+				</ul>
+			</div>
+
+
+			<div th:if="${msgExito ne null}" class="alert alert-success mt-3">
+				[[${msgExito}]]
+			</div>
+			<div th:if="${msgError ne null}" class="alert alert-warning mt-3">
+				[[${msgError}]]
+			</div>
+			<div class="container-fluid">
+				<form class="well">
+					<div class="row">
+						<div class="col-xs-12 col-md-8 col-md-offset-2">
+							<div class="form-group label-floating">
+								<span class="control-label">¿A quién estas buscando?</span>
+								<input placeholder="Buscar por DNI del cliente" class="form-control" type="text" name="dni" th:value="${param.dni}">
+							</div>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="submit" class="btn btn-primary btn-raised btn-sm"><i class="zmdi zmdi-search"></i> &nbsp; Buscar</button>
+							</p>
+						</div>
+						<div class="col-xs-6">
+							<p class="text-center">
+								<button type="button" class="btn btn-primary btn-raised btn-sm" th:value="Limpiar" onclick="limpiarBusqueda()"><i class="zmdi zmdi-search-for zmdi-hc-lg"></i> &nbsp; Limpiar Busqueda</button>
+							</p>
+						</div>
+					</div>
+				</form>
+
+			</div>
+			<!-- Panel listado de administradores -->
+			<div class="container-fluid">
+				<div class="panel panel-primary">
+					<div class="panel-heading">
+						<h3 class="panel-title"><i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DATOS DEL CLIENTE</h3>
+					</div>
+					<div class="panel-body">
+						<div class="table-responsive">
+							<table class="table table-hover text-center">
+								<thead>
+								<tr>
+									<th class="text-center">CUOTA INICIAL</th>
+									<th class="text-center">EDIFICIO</th>
+									<th class="text-center">CREDITO HIPOTECARIO</th>
+									<th class="text-center">FECHA C.HIPO.</th>
+									<th class="text-center">CUOTA MENSUAL</th>
+									<th class="text-center">AÑOS</th>
+									<th class="text-center">Nº DE CUENTA</th>
+									<th class="text-center">BANCO</th>
+									<th class="text-center">CLIENTE</th>
+									<th class="text-center">DNI</th>
+									<th class="text-center">DEPARTAMENTO</th>
+									<th class="text-center">OPCIONES</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr th:each="pagos : ${pagosPage.content}" th:object="${pagos}">
+									<td th:text="*{cuotaInicial}"></td>
+									<td th:text="*{edificio}"></td>
+									<td th:text="*{creditoHipote}"></td>
+									<td th:text="*{fechaCreHipo}"></td>
+									<td th:text="*{cuotaMensual}"></td>
+									<td th:text="*{anosCuoMen}"></td>
+									<td th:text="*{numeroCuenta}"></td>
+									<td th:text="*{nombreBanco}"></td>
+									<td th:text="*{datos.nombres}"></td>
+									<td th:text="*{datos.dni}"></td>
+									<td th:text="*{inmueble.departamento}"></td>
+									<td>
+										<div class="btn btn-group btn-group-sm">
+											<a th:href="@{/pagos/{id}/editar(id=*{id})}" title="Editar" class="btn btn-primary">
+												<i class="zmdi zmdi-edit"></i>
+											</a>
+											<a href="#!"  class="btn btn-danger" onclick="eliminarPagos(this)" title="Eliminar">
+												<i class="zmdi zmdi-delete"></i>
+											</a>
+
+											<form th:action="@{/pagos/{id}/eliminar(id=*{id})}" method="post">
+											</form>
+										</div>
+									</td>
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
+						<nav class="text-center">
+							<div sd:pagination-summary=""></div>
+							<nav class="mt-4">
+								<ul class="pagination justify-content-center" sd:pagination-split="7" sd:pagination="full"></ul>
+							</nav>
+						</nav>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+	<!-- SideBar -->
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	<script>
+		$.material.init();
+	</script>
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+	$("#ulRegistro").addClass("show-sideBar-SubMenu")
+	
+	$("#liPagos").addClass("active")
+		var msgOK = [[${msgExito}]]
+		
+		var msgError = [[${msgError}]]
+		console.log(msgOK)
+		if(msgOK){			
+			swal({"icon": "success", "title": "Muy Bien", "text": msgOK})
+		}
+		
+		if(msgError){			
+			swal({"icon": "error", "title": "Algo salio mal", "text": msgError})
+		}
+	</script>
+		<script>
+			function eliminarPagos(element) {
+                console.log('elemento', element);
+                
+                swal({
+					 title:"¿Estas seguro de eliminar al PAGO?",
+					  text: "Una vez eliminado no se podra recuperar.",
+					  icon: "warning",
+					  closeOnClickOutside: false,
+					  dangerMode: true,
+					  buttons: {
+						  cancel: {
+							    text: "No",
+							    visible: true,
+							    closeModal: true,
+							  },
+							  confirm: {
+							    text: "Si, Eliminar",
+							    value: true,
+							    visible: true,
+							    closeModal: true
+							  }
+							}
+					})
+					.then((willDelete) => {
+					  if (willDelete) {
+						  element.nextElementSibling.submit();
+					  } else {
+						  swal({
+			                    icon: "success",
+			                    title: "No se realizó ningún cambio!",
+			                });
+					  }
+					});
+
+            }
+			function limpiarBusqueda(){
+		        window.location='/pagos';
+		    }
+		</script>
+
+	</div>
+
+
+</body>
+</html>

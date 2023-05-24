@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es-ES"
+	  xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{master.html}">
+<head>
+	<title>Datos del Cliente</title>
+	<meta charset="UTF-8">
+</head>
+<body>
+
+	<div class="container section" layout:fragment="contenido_personalizado">
+		<!-- Content page-->
+		<section class="full-box dashboard-contentPage">
+			<!-- NavBar -->
+			<nav class="full-box dashboard-Navbar">
+				<ul class="full-box list-unstyled text-right">
+					<li class="pull-left">
+						<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+					</li>
+				</ul>
+			</nav>
+			<!-- Content page -->
+			<div class="container-fluid">
+				<div class="page-header">
+					<h1 class="text-titles"><i class="zmdi zmdi-account zmdi-hc-fw"></i> Registros <small>DATOS DEL CLIENTE</small></h1>
+				</div>
+			</div>
+
+			<div class="container-fluid">
+				<ul class="breadcrumb breadcrumb-tabs">
+				
+				    <li>
+						<a th:href="@{/inmuebles}" class="btn btn-warning">
+							<i class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE INMUEBLES
+						</a>
+					</li> 
+					<li id="clienteNuevoOrEditar">
+						<a th:href="@{/datos/nuevo}" class="btn btn-info" id="buttonTitulo">
+							<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE
+						</a>
+					</li>
+				
+					<li>
+						<a sec:authorize="hasRole('VENDEDOR')" th:href="@{/pagos/nuevo}" class="btn btn-primary"> <i
+							class="zmdi zmdi-plus"></i> &nbsp; NUEVO PAGO
+						</a>
+					</li>
+					<li>
+						<a sec:authorize="hasRole('VENDEDOR')" th:href="@{/proforma/nuevo}" class="btn btn-danger"> <i
+							class="zmdi zmdi-plus"></i> &nbsp; NUEVA PROFORMA
+						</a>
+					</li>
+					<li>
+						<a sec:authorize="hasRole('VENDEDOR')" th:href="@{/proforma}" class="btn btn-success"> <i
+							class="zmdi zmdi-format-list-bulleted"></i> &nbsp; LISTA DE PROFORMA
+						</a>
+					</li>
+				</ul>
+			</div>
+			
+			
+
+			<!-- Panel nuevo administrador -->
+			<div class="container-fluid">
+				<div class="panel panel-info">
+					<div class="panel-heading">
+					  	<h3 id="titulo" class="panel-title"><i class="zmdi zmdi-plus"></i> &nbsp; NUEVO DATOS DEL CLIENTE</h3>
+					</div>
+					<div class="panel-body">
+						<form th:action="@{''}" method="post" th:object="${datos}">
+							<fieldset>
+								<legend><i class="zmdi zmdi-account-box"></i> &nbsp; Información personal del cliente</legend>
+								<div class="container-fluid">
+									<div class="row">
+										<div class="col-xs-12 col-sm-12">
+											<div class="form-group">
+												<label for="nombres" class="control-label">Nombres y Apellidos *</label>
+												<input id="nombres"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,80}"
+													   class="form-control"
+													   type="text"
+													   name="nombres-reg"
+													   required=""
+													   maxlength="80"
+													   th:field="*{nombres}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{nombres}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="telefono" class="control-label">Teléfono</label>
+												<input id="telefono"  pattern="[0-9+]{1,15}"
+													   class="form-control"
+													   type="text"
+													   name="telefono-reg"
+													   maxlength="15"
+													   th:field="*{telefono}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{telefono}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="dni" class="control-label">Dni *</label>
+												<input id="dni"  pattern="[0-9-]{1,30}" onkeypress="onBuscarDNI(event)"
+													   class="form-control"  autocomplete="off" 
+													   type="text"
+													   name="dni-reg"
+													   required=""
+													   maxlength="30"
+													   th:field="*{dni}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{dni}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="email" class="control-label">Email *</label>
+												<input id="email"
+													   class="form-control"
+													   type="email"
+													   name="email-reg"
+													   required=""
+													   maxlength="50"
+													   th:field="*{email}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{email}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="estadoCivil" class="control-label">Estado Civil *</label>
+												<input id="estadoCivil"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="dni-reg"
+													   maxlength="30"
+													   th:field="*{estadoCivil}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{estadoCivil}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="lugarLaboral" class="control-label">Lugar laboral *</label>
+												<input id="lugarLaboral"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="dni-reg"
+													   maxlength="30"
+													   th:field="*{lugarLaboral}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{lugarLaboral}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="nombresConyu" class="control-label">Nombres y Apellidos Conyuge *</label>
+												<input id="nombresConyu"  pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="nombresConyu-reg"
+													   maxlength="30"
+													   th:field="*{nombresConyu}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{nombresConyu}"></div>
+											</div>
+										</div>
+										<div class="col-xs-12 col-sm-6">
+											<div class="form-group label-floating">
+												<label for="dniConyu" class="control-label">Dni Conyuge *</label>
+												<input id="dniConyu"  pattern="[0-9-]{1,30}"
+													   class="form-control"
+													   type="text"
+													   name="dniConyu-reg"
+													   maxlength="30"
+													   th:field="*{dniConyu}"
+													   th:errorclass="is-invalid">
+
+												<div class="invalid-feedback" th:errors="*{dniConyu}"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+
+							<br>
+							<div class="text-center" style="margin-top: 20px;">
+								<div style="display: inline-block;">
+									<a th:href="${datos.id != null} ? '/datos/' : '/proforma'" type="submit" class="btn btn-info btn-raised btn-sm">
+								   		 <i class="zmdi zmdi-close-circle zmdi-hc-lg"></i> CANCELAR
+									</a>
+								</div>
+								<div style="display: inline-block; margin-left: 10px;">
+									<button th:type="${datos.id != null || datos.id == null} ? 'submit' : 'button'" class="btn btn-info btn-raised btn-sm">
+	   							 		<i class="zmdi zmdi-floppy zmdi-hc-lg"></i> [[${datos.id ne null ? 'Actualizar' : 'Guardar'}]] Cliente
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+
+	<!--====== Scripts -->
+	<script th:src="@{/js/jquery-3.1.1.min.js}"></script>
+	<script th:src="@{/js/sweetalert2.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/material.min.js}"></script>
+	<script th:src="@{/js/ripples.min.js}"></script>
+	<script th:src="@{/js/jquery.mCustomScrollbar.concat.min.js}"></script>
+	<script th:src="@{/js/main.js}"></script>
+	
+	
+	<div layout:fragment="scripts">
+	<script th:inline="javascript">
+	
+	$("#ulRegistro").addClass("show-sideBar-SubMenu")
+	
+	$("#liDatos").addClass("active")
+	
+	
+	
+	// Obtener el elemento del título
+	var tituloElemento = document.getElementById('titulo');
+	var buttonTituloElemento = document.getElementById('buttonTitulo');
+	var buttonClienteNuevoOrEditar = document.getElementById('clienteNuevoOrEditar');
+	
+	// Función para cambiar el título a "NUEVO"
+	function cambiarANuevo() {
+	  tituloElemento.innerHTML = '<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO DATOS DEL CLIENTE';
+	  buttonTituloElemento.innerHTML = '<i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE';
+	  buttonClienteNuevoOrEditar.innerHTML='<a th:href="@{/datos/nuevo}" class="btn btn-info" id="buttonTitulo"><i class="zmdi zmdi-plus"></i> &nbsp; NUEVO CLIENTE</a>';
+	}
+
+	// Función para cambiar el título a "EDITAR"
+	function cambiarAEditar() {
+	  tituloElemento.innerHTML = '<i class="zmdi zmdi-edit"></i> &nbsp; EDITAR DATOS DEL CLIENTE';
+	  buttonTituloElemento.innerHTML = '<i class="zmdi zmdi-plus"></i> &nbsp; EDITAR CLIENTE';
+	  buttonClienteNuevoOrEditar.innerHTML='<a th:href="@{/datos/{id}/editar}" class="btn btn-info" id="buttonTitulo"><i class="zmdi zmdi-plus"></i> &nbsp; EDITAR CLIENTE</a>';
+
+	}
+
+	// Obtener la ruta actual
+	var ruta = window.location.pathname;
+
+	if (ruta === '/datos/nuevo') {
+	  cambiarANuevo();
+	} else if (ruta.includes('/datos/') && ruta.includes('/editar')) {
+	  cambiarAEditar();
+	}
+
+	
+	</script>
+	</div>
+
+</body>
+</html>

@@ -2,8 +2,6 @@ package mac.inmobiliaria.controller;
 
 import static mac.inmobiliaria.util.Constant.obtenerUsuarioLogeadoId;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import mac.inmobiliaria.model.Usuario;
-import mac.inmobiliaria.repository.UbigeoRepository;
 import mac.inmobiliaria.repository.UsuarioRepository;
 
 @Controller
@@ -27,9 +24,6 @@ public class PerfilController {
 
 	@Autowired
 	UsuarioRepository repoUser;
-
-	@Autowired
-	private UbigeoRepository ubigeoRepository;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;

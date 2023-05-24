@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -37,6 +36,11 @@ public class Distrito {
 		this.id = id;
 		this.distrito = distrito;
 		this.provincia = provincia;
+	}
+	
+	public Distrito(Integer id) {
+		super();
+		this.id = id;
 	}
 
 	public Integer getId() {

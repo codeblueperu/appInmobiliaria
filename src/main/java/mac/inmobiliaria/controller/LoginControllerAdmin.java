@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import mac.inmobiliaria.model.Distrito;
 import mac.inmobiliaria.model.Ubigeo;
 import mac.inmobiliaria.model.Usuario;
 import mac.inmobiliaria.repository.UbigeoRepository;
@@ -239,11 +240,12 @@ public class LoginControllerAdmin {
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("listaUbi", listaUbi);
-			model.addAttribute("id", obtenerUsuarioLogeadoId());
+			//model.addAttribute("id", obtenerUsuarioLogeadoId());
 			return "prepared";
 		}
 
 		usuario.setRol(Usuario.Rol.ADMIN);
+		usuario.setDistrito(new Distrito(1));
 		usuario.setPreinstall(1);
 		usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
 		usuarioRepository.save(usuario);
